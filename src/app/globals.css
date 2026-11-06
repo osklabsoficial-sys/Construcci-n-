@@ -134,3 +134,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #f2b705;
 }
+
+/* Carrusel de servicios sin scrollbar visible (Cambio 04 - bitácora) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

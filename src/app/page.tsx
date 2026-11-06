@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Menu,
@@ -33,7 +33,23 @@ import {
   Facebook,
   Instagram,
   Linkedin,
+  ChevronLeft,
+  ChevronRight,
+  House,
+  Mail,
+  Loader2,
 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useToast } from '@/hooks/use-toast'
 import {
   Dialog,
   DialogContent,
@@ -60,11 +76,18 @@ const IMG_INTERIORISMO = '/assets/unsplash-interiorismo.jpg'
 const IMG_ACABADOS = '/assets/unsplash-acabados.jpg'
 const IMG_CARPINTERIA = '/assets/unsplash-carpinteria.jpg'
 const IMG_INSTALACIONES = '/assets/unsplash-instalaciones.jpg'
+const IMG_ADECUACIONES = '/assets/adecuaciones-residenciales.jpg'
+const IMG_RESTAURANTE = '/assets/proyecto-restaurante.jpg'
+const IMG_IMPERMEABILIZACION = '/assets/proyecto-impermeabilizacion.jpg'
+const IMG_FORO = '/assets/proyecto-foro.jpg'
 
 const WHATSAPP_URL =
   'https://wa.me/525631223666?text=Hola%2C%20me%20interesa%20solicitar%20una%20cotizaci%C3%B3n.'
 const WHATSAPP_INFO_URL =
   'https://wa.me/525631223666?text=Hola%2C%20me%20interesa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.'
+const CONTACT_EMAIL = 'ventas@grupoconstrutech.com.mx'
+const PHONE_TEL_HREF = 'tel:525631223666'
+const PHONE_DISPLAY = '+52 56 3122 3666'
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -85,7 +108,7 @@ const NAV_LINKS = [
   { label: 'Proyectos', href: '#proyectos' },
   { label: 'Galería', href: '#galeria', gallery: true },
   { label: 'Proceso', href: '#proceso' },
-  { label: 'Contacto', href: '#footer' },
+  { label: 'Contacto', href: '#contacto' },
 ]
 
 const STATS = [
@@ -178,6 +201,14 @@ const SERVICES = [
     image: IMG_JARDIN,
     tag: 'Integral · Supervisión · Entrega',
   },
+  {
+    icon: House,
+    title: 'Adecuaciones Residenciales',
+    description:
+      'Adecuaciones y mejoras para tu hogar: ampliaciones, divisiones de espacios, pérgolas, terrazas y optimización de áreas para mayor funcionalidad y confort.',
+    image: IMG_ADECUACIONES,
+    tag: 'Ampliaciones · Pérgolas · Mejoras',
+  },
 ]
 
 const SERVICE_PILLARS = [
@@ -239,6 +270,7 @@ const PROJECTS = [
     id: 1,
     title: 'Velaria para Gradas y Cancha',
     category: 'Construcción · Herrería',
+    galleryCategory: 'Obra Civil',
     type: 'Obra Civil · Estructura Metálica',
     description:
       'Diseño, fabricación e instalación de velaría para zona de gradas, proporcionando sombra, funcionalidad e integración al entorno de las canchas deportivas.',
@@ -249,6 +281,7 @@ const PROJECTS = [
     id: 2,
     title: 'Techumbre para Zona Deportiva',
     category: 'Obra Civil · Estructural',
+    galleryCategory: 'Obra Civil',
     type: 'Velaria · Estructura Metálica',
     description:
       'Construcción e instalación de techumbre estructural sobre área deportiva, garantizando protección solar y continuidad de actividades al aire libre.',
@@ -259,6 +292,7 @@ const PROJECTS = [
     id: 3,
     title: 'Construcción de Áreas de Lectura',
     category: 'Paisajismo · Exteriores',
+    galleryCategory: 'Paisajismo',
     type: 'Paisajismo · Obra Exterior',
     description:
       'Construcción y adecuación de jardines y áreas de lectura al aire libre con bancas de concreto y andadores.',
@@ -269,6 +303,7 @@ const PROJECTS = [
     id: 4,
     title: 'Remodelación de Casetas',
     category: 'Remodelación Integral',
+    galleryCategory: 'Remodelación',
     type: 'Remodelación · Acabados',
     description:
       'Remodelación integral incluyendo resanado, aplanado, pintura, instalación eléctrica, ventanas y mobiliario de baño.',
@@ -279,11 +314,45 @@ const PROJECTS = [
     id: 5,
     title: 'Remodelación Residencial',
     category: 'Interiorismo · Acabados',
+    galleryCategory: 'Interiorismo',
     type: 'Interiorismo · Remodelación',
     description:
       'Remodelación integral de departamento: pisos, muros, plafones, iluminación y closets con acabados de alta calidad.',
     image: IMG_CASA,
     size: 'medium',
+  },
+  {
+    id: 6,
+    title: 'Remodelación de Restaurante',
+    category: 'Remodelación Integral',
+    galleryCategory: 'Remodelación',
+    type: 'Remodelación · Acabados',
+    description:
+      'Remodelación integral de restaurante: barra, comedor, pisos, iluminación y acabados para renovar la imagen y mejorar la experiencia de los clientes.',
+    image: IMG_RESTAURANTE,
+    size: 'medium',
+  },
+  {
+    id: 7,
+    title: 'Impermeabilización de Azotea',
+    category: 'Mantenimiento · Protección',
+    galleryCategory: 'Obra Civil',
+    type: 'Impermeabilización · Obra Exterior',
+    description:
+      'Aplicación de sistema de impermeabilización sobre azotea, garantizando protección contra humedad y filtraciones, y prolongando la vida útil de la construcción.',
+    image: IMG_IMPERMEABILIZACION,
+    size: 'medium',
+  },
+  {
+    id: 8,
+    title: 'Construcción de Foro al Aire Libre',
+    category: 'Obra Civil · Estructural',
+    galleryCategory: 'Obra Civil',
+    type: 'Construcción · Estructura Metálica',
+    description:
+      'Construcción de foro al aire libre con plataforma de concreto y estructura metálica, integrado al entorno para eventos y actividades públicas.',
+    image: IMG_FORO,
+    size: 'large',
   },
 ]
 
@@ -900,6 +969,31 @@ function Categories() {
 /* ============================== Servicios ============================== */
 
 function Servicios() {
+  const servicesRef = useRef<HTMLDivElement>(null)
+  const [canLeft, setCanLeft] = useState(false)
+  const [canRight, setCanRight] = useState(true)
+
+  const updateArrows = useCallback(() => {
+    const el = servicesRef.current
+    if (!el) return
+    setCanLeft(el.scrollLeft > 4)
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+  }, [])
+
+  useEffect(() => {
+    updateArrows()
+    window.addEventListener('resize', updateArrows)
+    return () => window.removeEventListener('resize', updateArrows)
+  }, [updateArrows])
+
+  function scrollServices(dir: 1 | -1) {
+    const el = servicesRef.current
+    if (!el) return
+    const card = el.querySelector('[data-service-card]') as HTMLElement | null
+    const step = card ? card.offsetWidth + 20 : 320
+    el.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
+
   return (
     <section id="servicios" className="py-24 bg-[#f8f9fa]">
       <div className="max-w-7xl mx-auto px-6">
@@ -951,16 +1045,42 @@ function Servicios() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="relative">
+          {canLeft && (
+            <button
+              type="button"
+              onClick={() => scrollServices(-1)}
+              aria-label="Ver servicios anteriores"
+              className="absolute -left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#F2B705] text-[#0f1923] shadow-[0_8px_22px_rgba(15,25,35,0.28)] transition-transform duration-200 hover:scale-110"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+          )}
+          {canRight && (
+            <button
+              type="button"
+              onClick={() => scrollServices(1)}
+              aria-label="Ver más servicios"
+              className="absolute -right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#F2B705] text-[#0f1923] shadow-[0_8px_22px_rgba(15,25,35,0.28)] transition-transform duration-200 hover:scale-110"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          )}
+          <div
+            ref={servicesRef}
+            onScroll={updateArrows}
+            className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-1 py-3"
+          >
           {SERVICES.map((service, i) => (
             <motion.div
               key={service.title}
+              data-service-card
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
+              transition={{ duration: 0.5, delay: (i % 4) * 0.08 }}
               whileHover={{ y: -8 }}
-              className="group overflow-hidden border border-[#0f1923]/8 bg-white transition-all duration-300 hover:border-[#F2B705]/40 hover:shadow-[0_18px_40px_rgba(15,25,35,0.08)]"
+              className="group w-[86%] max-w-[440px] shrink-0 snap-start overflow-hidden border border-[#0f1923]/8 bg-white transition-all duration-300 hover:border-[#F2B705]/40 hover:shadow-[0_18px_40px_rgba(15,25,35,0.08)] sm:w-[calc(50%-10px)] xl:w-[calc(25%-15px)]"
             >
               <div className="relative h-44 overflow-hidden">
                 <img
@@ -996,6 +1116,7 @@ function Servicios() {
               </div>
             </motion.div>
           ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1441,6 +1562,275 @@ function FAQ() {
   )
 }
 
+/* ============================== Contacto ============================== */
+
+const EMPTY_FORM = { name: '', email: '', phone: '', projectType: '', message: '' }
+
+function Contacto() {
+  const { toast } = useToast()
+  const [form, setForm] = useState(EMPTY_FORM)
+  const [submitting, setSubmitting] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (submitting) return
+    setSubmitting(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'No se pudo enviar la solicitud.')
+      }
+      toast({
+        title: '¡Solicitud enviada!',
+        description:
+          'Gracias por confiar en Grupo Construtech. Te contactaremos en menos de 24 horas.',
+      })
+      setForm(EMPTY_FORM)
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        title: 'Error al enviar',
+        description:
+          err instanceof Error ? err.message : 'Inténtalo de nuevo en unos minutos.',
+      })
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  function sendWhatsApp() {
+    const message = `Hola, soy ${form.name || 'un cliente interesado'}.${
+      form.projectType ? ` Tipo de proyecto: ${form.projectType}.` : ''
+    } ${form.message || 'Me interesa solicitar una cotización.'}`
+    window.open(
+      `https://wa.me/525631223666?text=${encodeURIComponent(message)}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  }
+
+  const inputClass =
+    'h-11 border-[#0f1923]/15 bg-white text-[#0f1923] placeholder:text-gray-400 focus-visible:ring-[#F2B705] focus-visible:border-[#F2B705]'
+
+  return (
+    <section id="contacto" className="scroll-mt-24 py-24 bg-[#f8f9fa]">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-12">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            className="space-y-4 lg:col-span-2"
+          >
+            <div className="inline-flex items-center gap-2 mb-1" style={{ color: YELLOW }}>
+              <div className="w-8 h-0.5" style={{ backgroundColor: YELLOW }} />
+              <span
+                style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em' }}
+              >
+                CONTACTO
+              </span>
+            </div>
+            <h2
+              className="text-[#0f1923] mb-2"
+              style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
+            >
+              Solicite su <span style={{ color: YELLOW }}>cotización</span>
+            </h2>
+            <p
+              className="text-gray-500 mb-6"
+              style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
+            >
+              Si necesitas más información o quieres solicitar un presupuesto,
+              envíanos tus datos y con gusto te asesoramos sin costo.
+            </p>
+
+            <div className="flex items-center gap-4 rounded-[22px] border border-[#0f1923]/8 bg-white p-4 shadow-sm">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-[#F2B705]/20 bg-[#F2B705]/10">
+                <Mail className="h-5 w-5" style={{ color: YELLOW }} />
+              </div>
+              <div>
+                <span className="block text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
+                  Correo
+                </span>
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="block text-sm font-semibold text-[#0f1923] transition-colors hover:text-[#F2B705] break-all"
+                >
+                  {CONTACT_EMAIL}
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-[22px] border border-[#0f1923]/8 bg-white p-4 shadow-sm">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-[#F2B705]/20 bg-[#F2B705]/10">
+                <Phone className="h-5 w-5" style={{ color: YELLOW }} />
+              </div>
+              <div>
+                <span className="block text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
+                  Teléfono
+                </span>
+                <a
+                  href={PHONE_TEL_HREF}
+                  className="block text-sm font-semibold text-[#0f1923] transition-colors hover:text-[#F2B705]"
+                >
+                  {PHONE_DISPLAY}
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-[22px] border border-[#0f1923]/8 bg-white p-4 shadow-sm">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-[#25D366]/20 bg-[#25D366]/10">
+                <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
+              </div>
+              <div>
+                <span className="block text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
+                  WhatsApp
+                </span>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-sm font-semibold text-[#0f1923] transition-colors hover:text-[#25D366]"
+                >
+                  {PHONE_DISPLAY}
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.form
+            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1 } } }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+            onSubmit={handleSubmit}
+            className="rounded-[24px] border border-[#0f1923]/8 bg-white p-6 shadow-sm sm:p-8 lg:col-span-3"
+            aria-label="Formulario de cotización"
+          >
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label htmlFor="contact-name" className="mb-2 block text-sm font-semibold text-[#0f1923]">
+                  Nombre completo *
+                </label>
+                <Input
+                  id="contact-name"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Ej. Juan Pérez"
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-email" className="mb-2 block text-sm font-semibold text-[#0f1923]">
+                  Correo electrónico *
+                </label>
+                <Input
+                  id="contact-email"
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="tu@correo.com"
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-phone" className="mb-2 block text-sm font-semibold text-[#0f1923]">
+                  Teléfono *
+                </label>
+                <Input
+                  id="contact-phone"
+                  type="tel"
+                  required
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="+52 55 0000 0000"
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-type" className="mb-2 block text-sm font-semibold text-[#0f1923]">
+                  Tipo de proyecto *
+                </label>
+                <Select
+                  value={form.projectType}
+                  onValueChange={(value) => setForm({ ...form, projectType: value })}
+                >
+                  <SelectTrigger id="contact-type" className="h-11 border-[#0f1923]/15 bg-white text-[#0f1923] data-[placeholder]:text-gray-400 focus-visible:ring-[#F2B705]">
+                    <SelectValue placeholder="Selecciona una opción" />
+                  </SelectTrigger>
+                  <SelectContent className="border-[#0f1923]/10 bg-white text-[#0f1923]">
+                    <SelectItem value="Residencial">Residencial</SelectItem>
+                    <SelectItem value="Comercial">Comercial</SelectItem>
+                    <SelectItem value="Industrial">Industrial</SelectItem>
+                    <SelectItem value="Interiorismo">Interiorismo</SelectItem>
+                    <SelectItem value="Remodelación">Remodelación</SelectItem>
+                    <SelectItem value="Adecuaciones Residenciales">Adecuaciones Residenciales</SelectItem>
+                    <SelectItem value="Otro">Otro</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="contact-message" className="mb-2 block text-sm font-semibold text-[#0f1923]">
+                  Cuéntanos sobre tu proyecto *
+                </label>
+                <Textarea
+                  id="contact-message"
+                  required
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  placeholder="Ej. Necesito remodelar mi departamento de 90 m² en la Roma Norte..."
+                  className="border-[#0f1923]/15 bg-white text-[#0f1923] placeholder:text-gray-400 focus-visible:ring-[#F2B705] focus-visible:border-[#F2B705]"
+                />
+              </div>
+            </div>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="h-12 flex-1 gap-2 bg-[#F2B705] text-sm font-bold text-[#0f1923] hover:bg-[#F2B705]/90 disabled:opacity-60"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    Enviar solicitud
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+              <Button
+                type="button"
+                onClick={sendWhatsApp}
+                className="h-12 flex-1 gap-2 bg-[#25D366] text-sm font-bold text-white hover:bg-[#1ebe5a]"
+              >
+                <WhatsAppIcon className="h-4 w-4 fill-current" />
+                Enviar por WhatsApp
+              </Button>
+            </div>
+            <p className="mt-3 text-center text-xs text-gray-500">
+              Al enviar aceptas ser contactado por nuestro equipo. Sin spam, sin
+              compromiso.
+            </p>
+          </motion.form>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ============================== CTA ============================== */
 
 function CTA() {
@@ -1483,7 +1873,7 @@ function CTA() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <a
-            href="#footer"
+            href="#contacto"
             className="inline-flex items-center gap-2 text-[#0f1923] px-8 py-4 transition-all duration-200 hover:opacity-90"
             style={{ backgroundColor: YELLOW, fontWeight: 700, fontSize: '1rem' }}
           >
@@ -1491,12 +1881,12 @@ function CTA() {
             <ArrowRight className="w-5 h-5" />
           </a>
           <a
-            href="tel:5631223666"
+            href={PHONE_TEL_HREF}
             className="inline-flex items-center gap-2 border border-white/30 hover:border-[#F2B705] hover:text-[#F2B705] text-white px-8 py-4 transition-all duration-200"
             style={{ fontWeight: 600, fontSize: '1rem' }}
           >
             <Phone className="w-5 h-5" />
-            56 3122 3666
+            {PHONE_DISPLAY}
           </a>
         </div>
       </div>
@@ -1635,7 +2025,9 @@ function GalleryDialog({
   if (!open) return null
 
   const filtered =
-    category === 'Todos' ? PROJECTS : PROJECTS.filter((p) => p.category === category)
+    category === 'Todos'
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.galleryCategory === category)
   const selected = PROJECTS.find((p) => p.id === selectedId)
   const selectedIndex = filtered.findIndex((p) => p.id === selectedId)
   const goPrev = () => selectedIndex > 0 && setSelectedId(filtered[selectedIndex - 1].id)
@@ -1767,7 +2159,7 @@ function GalleryDialog({
                 <div className="absolute inset-0 bg-gradient-to-t from-[#08111b]/95 via-[#08111b]/20 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-5">
                   <span className="inline-block rounded-full bg-[#F2B705] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#0f1923]">
-                    {project.category}
+                    {project.galleryCategory}
                   </span>
                   <h3
                     className="mt-3 text-white"
@@ -1857,7 +2249,7 @@ function GalleryDialog({
             <div className="flex flex-col gap-4 border-t border-white/10 bg-[#0f1923] px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
               <div className="max-w-xl">
                 <span className="inline-block rounded-full bg-[#F2B705] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#0f1923]">
-                  {selected.category}
+                  {selected.galleryCategory}
                 </span>
                 <h3
                   className="mt-3 text-white"
@@ -1944,6 +2336,7 @@ export default function Home() {
         <Testimonios />
         <FAQ />
         <CTA />
+        <Contacto />
       </main>
       <Footer />
       <WhatsAppFloat />
