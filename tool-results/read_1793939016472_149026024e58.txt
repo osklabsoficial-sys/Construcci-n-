@@ -1,0 +1,1152 @@
+     1→i = `_drag${n.toUpperCase()}`, a = this.visualElement.getProps()[i];
+     2→return a || this.visualElement.getValue(n, this.visualElement.latestValues[n] ?? 0)
+     3→}
+     4→snapToCursor(n) {
+     5→    jn(i => {
+     6→        const {
+     7→            drag: o
+     8→        } = this.getProps();
+     9→        if (!Ka(i, o, this.currentDirection)) return;
+    10→        const {
+    11→            projection: a
+    12→        } = this.visualElement, u = this.getAxisMotionValue(i);
+    13→        if (a && a.layout) {
+    14→            const {
+    15→                min: c,
+    16→                max: d
+    17→            } = a.layout.layoutBox[i], h = u.get() || 0;
+    18→            u.set(n[i] - Ge(c, d, .5) + h)
+    19→        }
+    20→    })
+    21→}
+    22→scalePositionWithinConstraints() {
+    23→    if (!this.visualElement.current) return;
+    24→    const {
+    25→        drag: n,
+    26→        dragConstraints: i
+    27→    } = this.getProps(), {
+    28→        projection: o
+    29→    } = this.visualElement;
+    30→    if (!Zi(i) || !o || !this.constraints) return;
+    31→    this.stopAnimation();
+    32→    const a = {
+    33→        x: 0,
+    34→        y: 0
+    35→    };
+    36→    jn(c => {
+    37→        const d = this.getAxisMotionValue(c);
+    38→        if (d && this.constraints !== !1) {
+    39→            const h = d.get();
+    40→            a[c] = TP({
+    41→                min: h,
+    42→                max: h
+    43→            }, this.constraints[c])
+    44→        }
+    45→    });
+    46→    const {
+    47→        transformTemplate: u
+    48→    } = this.visualElement.getProps();
+    49→    this.visualElement.current.style.transform = u ? u({}, "") : "none", o.root && o.root.updateScroll(), o.updateLayout(), this.constraints = !1, this.resolveConstraints(), jn(c => {
+    50→        if (!Ka(c, n, null)) return;
+    51→        const d = this.getAxisMotionValue(c),
+    52→            {
+    53→                min: h,
+    54→                max: m
+    55→            } = this.constraints[c];
+    56→        d.set(Ge(h, m, a[c]))
+    57→    }), this.visualElement.render()
+    58→}
+    59→addListeners() {
+    60→    if (!this.visualElement.current) return;
+    61→    MP.set(this.visualElement, this);
+    62→    const n = this.visualElement.current,
+    63→        i = hs(n, "pointerdown", m => {
+    64→            const {
+    65→                drag: y,
+    66→                dragListener: g = !0
+    67→            } = this.getProps(), w = m.target, b = w !== n && mk(w);
+    68→            y && g && !b && this.start(m)
+    69→        });
+    70→    let o;
+    71→    const a = () => {
+    72→            const {
+    73→                dragConstraints: m
+    74→            } = this.getProps();
+    75→            Zi(m) && m.current && (this.constraints = this.resolveRefConstraints(), o || (o = DP(n, m.current, () => this.scalePositionWithinConstraints())))
+    76→        },
+    77→        {
+    78→            projection: u
+    79→        } = this.visualElement,
+    80→        c = u.addEventListener("measure", a);
+    81→    u && !u.layout && (u.root && u.root.updateScroll(), u.updateLayout()), Ye.read(a);
+    82→    const d = ws(window, "resize", () => this.scalePositionWithinConstraints()),
+    83→        h = u.addEventListener("didUpdate", (({
+    84→            delta: m,
+    85→            hasLayoutChanged: y
+    86→        }) => {
+    87→            this.isDragging && y && (jn(g => {
+    88→                const w = this.getAxisMotionValue(g);
+    89→                w && (this.originPoint[g] += m[g].translate, w.set(w.get() + m[g].translate))
+    90→            }), this.visualElement.render())
+    91→        }));
+    92→    return () => {
+    93→        d(), i(), c(), h && h(), o && o()
+    94→    }
+    95→}
+    96→getProps() {
+    97→    const n = this.visualElement.getProps(),
+    98→        {
+    99→            drag: i = !1,
+   100→            dragDirectionLock: o = !1,
+   101→            dragPropagation: a = !1,
+   102→            dragConstraints: u = !1,
+   103→            dragElastic: c = Pd,
+   104→            dragMomentum: d = !0
+   105→        } = n;
+   106→    return {
+   107→        ...n,
+   108→        drag: i,
+   109→        dragDirectionLock: o,
+   110→        dragPropagation: a,
+   111→        dragConstraints: u,
+   112→        dragElastic: c,
+   113→        dragMomentum: d
+   114→    }
+   115→}
+   116→}
+   117→
+   118→function qg(e) {
+   119→    let n = !0;
+   120→    return () => {
+   121→        if (n) {
+   122→            n = !1;
+   123→            return
+   124→        }
+   125→        e()
+   126→    }
+   127→}
+   128→
+   129→function DP(e, n, i) {
+   130→    const o = sg(e, qg(i)),
+   131→        a = sg(n, qg(i));
+   132→    return () => {
+   133→        o(), a()
+   134→    }
+   135→}
+   136→
+   137→function Ka(e, n, i) {
+   138→    return (n === !0 || n === e) && (i === null || i === e)
+   139→}
+   140→
+   141→function LP(e, n = 10) {
+   142→    let i = null;
+   143→    return Math.abs(e.y) > n ? i = "y" : Math.abs(e.x) > n && (i = "x"), i
+   144→}
+   145→class AP extends zr {
+   146→    constructor(n) {
+   147→        super(n), this.removeGroupControls = ln, this.removeListeners = ln, this.controls = new jP(n)
+   148→    }
+   149→    mount() {
+   150→        const {
+   151→            dragControls: n
+   152→        } = this.node.getProps();
+   153→        n && (this.removeGroupControls = n.subscribe(this.controls)), this.removeListeners = this.controls.addListeners() || ln
+   154→    }
+   155→    update() {
+   156→        const {
+   157→            dragControls: n
+   158→        } = this.node.getProps(), {
+   159→            dragControls: i
+   160→        } = this.node.prevProps || {};
+   161→        n !== i && (this.removeGroupControls(), n && (this.removeGroupControls = n.subscribe(this.controls)))
+   162→    }
+   163→    unmount() {
+   164→        this.removeGroupControls(), this.removeListeners(), this.controls.isDragging || this.controls.endPanSession()
+   165→    }
+   166→}
+   167→const Vc = e => (n, i) => {
+   168→    e && Ye.update(() => e(n, i), !1, !0)
+   169→};
+   170→class _P extends zr {
+   171→    constructor() {
+   172→        super(...arguments), this.removePointerDownListener = ln
+   173→    }
+   174→    onPointerDown(n) {
+   175→        this.session = new _v(n, this.createPanHandlers(), {
+   176→            transformPagePoint: this.node.getTransformPagePoint(),
+   177→            contextWindow: Av(this.node)
+   178→        })
+   179→    }
+   180→    createPanHandlers() {
+   181→        const {
+   182→            onPanSessionStart: n,
+   183→            onPanStart: i,
+   184→            onPan: o,
+   185→            onPanEnd: a
+   186→        } = this.node.getProps();
+   187→        return {
+   188→            onSessionStart: Vc(n),
+   189→            onStart: Vc(i),
+   190→            onMove: Vc(o),
+   191→            onEnd: (u, c) => {
+   192→                delete this.session, a && Ye.postRender(() => a(u, c))
+   193→            }
+   194→        }
+   195→    }
+   196→    mount() {
+   197→        this.removePointerDownListener = hs(this.node.current, "pointerdown", n => this.onPointerDown(n))
+   198→    }
+   199→    update() {
+   200→        this.session && this.session.updateHandlers(this.createPanHandlers())
+   201→    }
+   202→    unmount() {
+   203→        this.removePointerDownListener(), this.session && this.session.end()
+   204→    }
+   205→}
+   206→let Bc = !1;
+   207→class FP extends S.Component {
+   208→    componentDidMount() {
+   209→        const {
+   210→            visualElement: n,
+   211→            layoutGroup: i,
+   212→            switchLayoutGroup: o,
+   213→            layoutId: a
+   214→        } = this.props, {
+   215→            projection: u
+   216→        } = n;
+   217→        u && (i.group && i.group.add(u), o && o.register && a && o.register(u), Bc && u.root.didUpdate(), u.addEventListener("animationComplete", () => {
+   218→            this.safeToRemove()
+   219→        }), u.setOptions({
+   220→            ...u.options,
+   221→            layoutDependency: this.props.layoutDependency,
+   222→            onExitComplete: () => this.safeToRemove()
+   223→        })), cl.hasEverUpdated = !0
+   224→    }
+   225→    getSnapshotBeforeUpdate(n) {
+   226→        const {
+   227→            layoutDependency: i,
+   228→            visualElement: o,
+   229→            drag: a,
+   230→            isPresent: u
+   231→        } = this.props, {
+   232→            projection: c
+   233→        } = o;
+   234→        return c && (c.isPresent = u, n.layoutDependency !== i && c.setOptions({
+   235→            ...c.options,
+   236→            layoutDependency: i
+   237→        }), Bc = !0, a || n.layoutDependency !== i || i === void 0 || n.isPresent !== u ? c.willUpdate() : this.safeToRemove(), n.isPresent !== u && (u ? c.promote() : c.relegate() || Ye.postRender(() => {
+   238→            const d = c.getStack();
+   239→            (!d || !d.members.length) && this.safeToRemove()
+   240→        }))), null
+   241→    }
+   242→    componentDidUpdate() {
+   243→        const {
+   244→            visualElement: n,
+   245→            layoutAnchor: i
+   246→        } = this.props, {
+   247→            projection: o
+   248→        } = n;
+   249→        o && (o.options.layoutAnchor = i, o.root.didUpdate(), pf.postRender(() => {
+   250→            !o.currentAnimation && o.isLead() && this.safeToRemove()
+   251→        }))
+   252→    }
+   253→    componentWillUnmount() {
+   254→        const {
+   255→            visualElement: n,
+   256→            layoutGroup: i,
+   257→            switchLayoutGroup: o
+   258→        } = this.props, {
+   259→            projection: a
+   260→        } = n;
+   261→        Bc = !0, a && (a.scheduleCheckAfterUnmount(), i && i.group && i.group.remove(a), o && o.deregister && o.deregister(a))
+   262→    }
+   263→    safeToRemove() {
+   264→        const {
+   265→            safeToRemove: n
+   266→        } = this.props;
+   267→        n && n()
+   268→    }
+   269→    render() {
+   270→        return null
+   271→    }
+   272→}
+   273→
+   274→function Ov(e) {
+   275→    const [n, i] = W5(), o = S.useContext(e0);
+   276→    return v.jsx(FP, {
+   277→        ...e,
+   278→        layoutGroup: o,
+   279→        switchLayoutGroup: S.useContext(Dv),
+   280→        isPresent: n,
+   281→        safeToRemove: i
+   282→    })
+   283→}
+   284→const OP = {
+   285→    pan: {
+   286→        Feature: _P
+   287→    },
+   288→    drag: {
+   289→        Feature: AP,
+   290→        ProjectionNode: Cv,
+   291→        MeasureLayout: Ov
+   292→    }
+   293→};
+   294→
+   295→function Zg(e, n, i) {
+   296→    const {
+   297→        props: o
+   298→    } = e;
+   299→    e.animationState && o.whileHover && e.animationState.setActive("whileHover", i === "Start");
+   300→    const a = "onHover" + i,
+   301→        u = o[a];
+   302→    u && Ye.postRender(() => u(n, Ns(n)))
+   303→}
+   304→class zP extends zr {
+   305→    mount() {
+   306→        const {
+   307→            current: n
+   308→        } = this.node;
+   309→        n && (this.unmount = dk(n, (i, o) => (Zg(this.node, o, "Start"), a => Zg(this.node, a, "End"))))
+   310→    }
+   311→    unmount() {}
+   312→}
+   313→class IP extends zr {
+   314→    constructor() {
+   315→        super(...arguments), this.isActive = !1
+   316→    }
+   317→    onFocus() {
+   318→        let n = !1;
+   319→        try {
+   320→            n = this.node.current.matches(":focus-visible")
+   321→        } catch {
+   322→            n = !0
+   323→        }!n || !this.node.animationState || (this.node.animationState.setActive("whileFocus", !0), this.isActive = !0)
+   324→    }
+   325→    onBlur() {
+   326→        !this.isActive || !this.node.animationState || (this.node.animationState.setActive("whileFocus", !1), this.isActive = !1)
+   327→    }
+   328→    mount() {
+   329→        this.unmount = Ps(ws(this.node.current, "focus", () => this.onFocus()), ws(this.node.current, "blur", () => this.onBlur()))
+   330→    }
+   331→    unmount() {}
+   332→}
+   333→
+   334→function Jg(e, n, i) {
+   335→    const {
+   336→        props: o
+   337→    } = e;
+   338→    if (e.current instanceof HTMLButtonElement && e.current.disabled) return;
+   339→    e.animationState && o.whileTap && e.animationState.setActive("whileTap", i === "Start");
+   340→    const a = "onTap" + (i === "End" ? "" : i),
+   341→        u = o[a];
+   342→    u && Ye.postRender(() => u(n, Ns(n)))
+   343→}
+   344→class VP extends zr {
+   345→    mount() {
+   346→        const {
+   347→            current: n
+   348→        } = this.node;
+   349→        if (!n) return;
+   350→        const {
+   351→            globalTapTarget: i,
+   352→            propagate: o
+   353→        } = this.node.props;
+   354→        this.unmount = yk(n, (a, u) => (Jg(this.node, u, "Start"), (c, {
+   355→            success: d
+   356→        }) => Jg(this.node, c, d ? "End" : "Cancel")), {
+   357→            useGlobalTarget: i,
+   358→            stopPropagation: (o == null ? void 0 : o.tap) === !1
+   359→        })
+   360→    }
+   361→    unmount() {}
+   362→}
+   363→const Td = new WeakMap,
+   364→    Uc = new WeakMap,
+   365→    BP = e => {
+   366→        const n = Td.get(e.target);
+   367→        n && n(e)
+   368→    },
+   369→    UP = e => {
+   370→        e.forEach(BP)
+   371→    };
+   372→
+   373→function WP({
+   374→    root: e,
+   375→    ...n
+   376→}) {
+   377→    const i = e || document;
+   378→    Uc.has(i) || Uc.set(i, {});
+   379→    const o = Uc.get(i),
+   380→        a = JSON.stringify(n);
+   381→    return o[a] || (o[a] = new IntersectionObserver(UP, {
+   382→        root: e,
+   383→        ...n
+   384→    })), o[a]
+   385→}
+   386→
+   387→function $P(e, n, i) {
+   388→    const o = WP(n);
+   389→    return Td.set(e, i), o.observe(e), () => {
+   390→        Td.delete(e), o.unobserve(e)
+   391→    }
+   392→}
+   393→const HP = {
+   394→    some: 0,
+   395→    all: 1
+   396→};
+   397→class KP extends zr {
+   398→    constructor() {
+   399→        super(...arguments), this.hasEnteredView = !1, this.isInView = !1
+   400→    }
+   401→    startObserver() {
+   402→        var h;
+   403→        (h = this.stopObserver) == null || h.call(this);
+   404→        const {
+   405→            viewport: n = {}
+   406→        } = this.node.getProps(), {
+   407→            root: i,
+   408→            margin: o,
+   409→            amount: a = "some",
+   410→            once: u
+   411→        } = n, c = {
+   412→            root: i ? i.current : void 0,
+   413→            rootMargin: o,
+   414→            threshold: typeof a == "number" ? a : HP[a]
+   415→        }, d = m => {
+   416→            const {
+   417→                isIntersecting: y
+   418→            } = m;
+   419→            if (this.isInView === y || (this.isInView = y, u && !y && this.hasEnteredView)) return;
+   420→            y && (this.hasEnteredView = !0), this.node.animationState && this.node.animationState.setActive("whileInView", y);
+   421→            const {
+   422→                onViewportEnter: g,
+   423→                onViewportLeave: w
+   424→            } = this.node.getProps(), b = y ? g : w;
+   425→            b && b(m)
+   426→        };
+   427→        this.stopObserver = $P(this.node.current, c, d)
+   428→    }
+   429→    mount() {
+   430→        this.startObserver()
+   431→    }
+   432→    update() {
+   433→        if (typeof IntersectionObserver > "u") return;
+   434→        const {
+   435→            props: n,
+   436→            prevProps: i
+   437→        } = this.node;
+   438→        ["amount", "margin", "root"].some(GP(n, i)) && this.startObserver()
+   439→    }
+   440→    unmount() {
+   441→        var n;
+   442→        (n = this.stopObserver) == null || n.call(this), this.hasEnteredView = !1, this.isInView = !1
+   443→    }
+   444→}
+   445→
+   446→function GP({
+   447→    viewport: e = {}
+   448→}, {
+   449→    viewport: n = {}
+   450→} = {}) {
+   451→    return i => e[i] !== n[i]
+   452→}
+   453→const YP = {
+   454→        inView: {
+   455→            Feature: KP
+   456→        },
+   457→        tap: {
+   458→            Feature: VP
+   459→        },
+   460→        focus: {
+   461→            Feature: IP
+   462→        },
+   463→        hover: {
+   464→            Feature: zP
+   465→        }
+   466→    },
+   467→    XP = {
+   468→        layout: {
+   469→            ProjectionNode: Cv,
+   470→            MeasureLayout: Ov
+   471→        }
+   472→    },
+   473→    QP = {
+   474→        ...xP,
+   475→        ...YP,
+   476→        ...OP,
+   477→        ...XP
+   478→    },
+   479→    tt = pP(QP, mP),
+   480→    Ef = "/assets/CASA-BdNrGWgy.jpg",
+   481→    qP = [{
+   482→        value: "+15",
+   483→        label: "Años de experiencia"
+   484→    }, {
+   485→        value: "+200",
+   486→        label: "Proyectos completados"
+   487→    }, {
+   488→        value: "+50",
+   489→        label: "Clientes satisfechos"
+   490→    }, {
+   491→        value: "100%",
+   492→        label: "Compromiso de calidad"
+   493→    }];
+   494→
+   495→function ZP() {
+   496→    return v.jsxs("section", {
+   497→        className: "relative min-h-screen flex items-center justify-center overflow-hidden",
+   498→        children: [v.jsx("div", {
+   499→            className: "absolute inset-0 bg-cover bg-center bg-no-repeat scale-105",
+   500→            style: {
+   501→                backgroundImage: `linear-gradient(90deg, rgba(15,25,35,0.9), rgba(15,25,35,0.7) 40%, rgba(15,25,35,0.45)), url(${Ef})`
+   502→            }
+   503→        }), v.jsx("div", {
+   504→            className: "absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(242,183,5,0.18),transparent_29%)]"
+   505→        }), v.jsx("div", {
+   506→            className: "absolute inset-0 bg-[linear-gradient(120deg,transparent_0%,rgba(242,183,5,0.06)_45%,transparent_100%)] opacity-80"
+   507→        }), v.jsxs(tt.div, {
+   508→            className: "absolute right-8 top-28 hidden xl:flex flex-col gap-3 rounded-2xl border border-[#F2B705]/25 bg-[#0f1923]/60 p-4 shadow-[0_20px_60px_rgba(15,25,35,0.35)] backdrop-blur-md",
+   509→            initial: {
+   510→                opacity: 0,
+   511→                x: 24
+   512→            },
+   513→            animate: {
+   514→                opacity: 1,
+   515→                x: 0,
+   516→                y: [0, -6, 0]
+   517→            },
+   518→            transition: {
+   519→                delay: .5,
+   520→                duration: .7,
+   521→                repeat: 1 / 0,
+   522→                repeatDelay: 3.5,
+   523→                ease: "easeInOut"
+   524→            },
+   525→            children: [v.jsx("div", {
+   526→                className: "text-xs uppercase tracking-[0.18em] text-[#F2B705]",
+   527→                children: "Proyectos"
+   528→            }), v.jsx("div", {
+   529→                className: "text-3xl font-black text-white",
+   530→                children: "+200"
+   531→            }), v.jsx("div", {
+   532→                className: "text-sm text-gray-300",
+   533→                children: "Obras entregadas"
+   534→            })]
+   535→        }), v.jsxs("div", {
+   536→            className: "relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-20 w-full",
+   537→            children: [v.jsxs(tt.div, {
+   538→                className: "max-w-3xl",
+   539→                initial: {
+   540→                    opacity: 0,
+   541→                    x: -24
+   542→                },
+   543→                animate: {
+   544→                    opacity: 1,
+   545→                    x: 0
+   546→                },
+   547→                transition: {
+   548→                    duration: .8,
+   549→                    ease: "easeOut"
+   550→                },
+   551→                children: [v.jsxs(tt.div, {
+   552→                    className: "inline-flex items-center gap-2 px-4 py-1.5 mb-6 border",
+   553→                    style: {
+   554→                        backgroundColor: "rgba(242,183,5,0.15)",
+   555→                        borderColor: "rgba(242,183,5,0.4)",
+   556→                        color: "#F2B705"
+   557→                    },
+   558→                    initial: {
+   559→                        opacity: 0,
+   560→                        y: -12
+   561→                    },
+   562→                    animate: {
+   563→                        opacity: 1,
+   564→                        y: 0
+   565→                    },
+   566→                    transition: {
+   567→                        delay: .15,
+   568→                        duration: .5
+   569→                    },
+   570→                    children: [v.jsx("span", {
+   571→                        className: "w-2 h-2 animate-pulse",
+   572→                        style: {
+   573→                            backgroundColor: "#F2B705"
+   574→                        }
+   575→                    }), v.jsx("span", {
+   576→                        style: {
+   577→                            fontSize: "0.8rem",
+   578→                            letterSpacing: "0.08em",
+   579→                            fontWeight: 600
+   580→                        },
+   581→                        children: "EMPRESA LÍDER EN CONSTRUCCIÓN · CDMX"
+   582→                    })]
+   583→                }), v.jsxs(tt.h1, {
+   584→                    className: "text-white mb-6",
+   585→                    style: {
+   586→                        fontWeight: 800,
+   587→                        lineHeight: 1.1,
+   588→                        fontSize: "clamp(2.2rem, 5vw, 4rem)"
+   589→                    },
+   590→                    initial: {
+   591→                        opacity: 0,
+   592→                        y: 30
+   593→                    },
+   594→                    animate: {
+   595→                        opacity: 1,
+   596→                        y: 0
+   597→                    },
+   598→                    transition: {
+   599→                        delay: .2,
+   600→                        duration: .8
+   601→                    },
+   602→                    children: ["Construcción e Interiorismo", " ", v.jsx("span", {
+   603→                        style: {
+   604→                            color: "#F2B705"
+   605→                        },
+   606→                        children: "de Alta Calidad"
+   607→                    })]
+   608→                }), v.jsx(tt.p, {
+   609→                    className: "text-gray-300 mb-10 max-w-xl",
+   610→                    style: {
+   611→                        fontSize: "clamp(1rem, 2vw, 1.2rem)",
+   612→                        lineHeight: 1.7
+   613→                    },
+   614→                    initial: {
+   615→                        opacity: 0,
+   616→                        y: 26
+   617→                    },
+   618→                    animate: {
+   619→                        opacity: 1,
+   620→                        y: 0
+   621→                    },
+   622→                    transition: {
+   623→                        delay: .3,
+   624→                        duration: .8
+   625→                    },
+   626→                    children: "Soluciones integrales para proyectos residenciales, comerciales e industriales. Transformamos ideas en espacios excepcionales con profesionalismo y precisión."
+   627→                }), v.jsxs(tt.div, {
+   628→                    className: "flex flex-wrap gap-4",
+   629→                    initial: {
+   630→                        opacity: 0,
+   631→                        y: 20
+   632→                    },
+   633→                    animate: {
+   634→                        opacity: 1,
+   635→                        y: 0
+   636→                    },
+   637→                    transition: {
+   638→                        delay: .4,
+   639→                        duration: .7
+   640→                    },
+   641→                    children: [v.jsxs(tt.a, {
+   642→                        href: "#footer",
+   643→                        className: "inline-flex items-center gap-2 text-[#0f1923] px-8 py-4 transition-all duration-200 hover:opacity-90",
+   644→                        style: {
+   645→                            backgroundColor: "#F2B705",
+   646→                            fontWeight: 700,
+   647→                            fontSize: "0.95rem"
+   648→                        },
+   649→                        whileHover: {
+   650→                            scale: 1.03,
+   651→                            y: -2
+   652→                        },
+   653→                        whileTap: {
+   654→                            scale: .98
+   655→                        },
+   656→                        children: ["Solicitar cotización", v.jsx(Gd, {
+   657→                            className: "w-4 h-4"
+   658→                        })]
+   659→                    }), v.jsx(tt.a, {
+   660→                        href: "#proyectos",
+   661→                        className: "inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white hover:bg-white/10 px-8 py-4 transition-all duration-200",
+   662→                        style: {
+   663→                            fontWeight: 600,
+   664→                            fontSize: "0.95rem"
+   665→                        },
+   666→                        whileHover: {
+   667→                            scale: 1.03,
+   668→                            y: -2
+   669→                        },
+   670→                        whileTap: {
+   671→                            scale: .98
+   672→                        },
+   673→                        children: "Ver proyectos"
+   674→                    })]
+   675→                })]
+   676→            }), v.jsx(tt.div, {
+   677→                className: "mt-16 grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden border border-[#F2B705]/15 shadow-[0_20px_45px_rgba(15,25,35,0.18)]",
+   678→                style: {
+   679→                    backgroundColor: "rgba(255,255,255,0.08)"
+   680→                },
+   681→                initial: {
+   682→                    opacity: 0,
+   683→                    y: 24
+   684→                },
+   685→                animate: {
+   686→                    opacity: 1,
+   687→                    y: 0
+   688→                },
+   689→                transition: {
+   690→                    delay: .45,
+   691→                    duration: .8
+   692→                },
+   693→                children: qP.map((e, n) => v.jsxs(tt.div, {
+   694→                    className: "bg-[#0f1923]/80 backdrop-blur px-6 py-5 text-center transition-colors duration-300",
+   695→                    style: {
+   696→                        cursor: "default"
+   697→                    },
+   698→                    onMouseEnter: i => i.currentTarget.style.backgroundColor = "rgba(242,183,5,0.15)",
+   699→                    onMouseLeave: i => i.currentTarget.style.backgroundColor = "rgba(15,25,35,0.8)",
+   700→                    initial: {
+   701→                        opacity: 0,
+   702→                        y: 18
+   703→                    },
+   704→                    animate: {
+   705→                        opacity: 1,
+   706→                        y: 0
+   707→                    },
+   708→                    transition: {
+   709→                        delay: .55 + n * .1,
+   710→                        duration: .5
+   711→                    },
+   712→                    children: [v.jsx("div", {
+   713→                        className: "mb-1",
+   714→                        style: {
+   715→                            color: "#F2B705",
+   716→                            fontWeight: 800,
+   717→                            fontSize: "1.8rem"
+   718→                        },
+   719→                        children: e.value
+   720→                    }), v.jsx("div", {
+   721→                        className: "text-gray-400",
+   722→                        style: {
+   723→                            fontSize: "0.8rem"
+   724→                        },
+   725→                        children: e.label
+   726→                    })]
+   727→                }, n))
+   728→            })]
+   729→        }), v.jsxs(tt.a, {
+   730→            href: "#nosotros",
+   731→            className: "absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 transition-colors duration-200 flex flex-col items-center gap-1 z-10",
+   732→            style: {
+   733→                textDecoration: "none"
+   734→            },
+   735→            onMouseEnter: e => e.currentTarget.style.color = "#F2B705",
+   736→            onMouseLeave: e => e.currentTarget.style.color = "rgba(255,255,255,0.5)",
+   737→            initial: {
+   738→                opacity: 0,
+   739→                y: 10
+   740→            },
+   741→            animate: {
+   742→                opacity: 1,
+   743→                y: 0
+   744→            },
+   745→            transition: {
+   746→                delay: .7,
+   747→                duration: .7
+   748→            },
+   749→            children: [v.jsx("span", {
+   750→                style: {
+   751→                    fontSize: "0.7rem",
+   752→                    letterSpacing: "0.1em"
+   753→                },
+   754→                children: "SCROLL"
+   755→            }), v.jsx(Zy, {
+   756→                className: "w-5 h-5 animate-bounce"
+   757→            })]
+   758→        })]
+   759→    })
+   760→}
+   761→const Ll = "/assets/CANCHA-Jgu3Sqk6.png",
+   762→    JP = ["Equipo con enfoque técnico, operativo y de atención al detalle", "Soluciones para proyectos residenciales, comerciales e industriales", "Coordinación de obra, materiales y proveedores bajo criterios de calidad", "Supervisión constante para mantener estándares de ejecución y seguridad", "Diseño y acabados pensados para funcionalidad, estética y durabilidad", "Comunicación clara y directa en cada etapa del proyecto"];
+   763→
+   764→function e4() {
+   765→    return v.jsx("section", {
+   766→        id: "nosotros",
+   767→        className: "py-24 bg-white",
+   768→        children: v.jsx("div", {
+   769→            className: "max-w-7xl mx-auto px-6",
+   770→            children: v.jsxs("div", {
+   771→                className: "grid md:grid-cols-2 gap-16 items-center",
+   772→                children: [v.jsxs(tt.div, {
+   773→                    className: "relative",
+   774→                    initial: {
+   775→                        opacity: 0,
+   776→                        x: -26
+   777→                    },
+   778→                    whileInView: {
+   779→                        opacity: 1,
+   780→                        x: 0
+   781→                    },
+   782→                    viewport: {
+   783→                        once: !0,
+   784→                        amount: .2
+   785→                    },
+   786→                    transition: {
+   787→                        duration: .7,
+   788→                        ease: "easeOut"
+   789→                    },
+   790→                    children: [v.jsxs("div", {
+   791→                        className: "relative overflow-hidden shadow-2xl",
+   792→                        children: [v.jsx(tt.img, {
+   793→                            src: Ll,
+   794→                            alt: "Proyecto de techumbre - Grupo Construtech",
+   795→                            className: "w-full h-[500px] object-cover",
+   796→                            initial: {
+   797→                                scale: 1.08,
+   798→                                opacity: 0
+   799→                            },
+   800→                            whileInView: {
+   801→                                scale: 1,
+   802→                                opacity: 1
+   803→                            },
+   804→                            viewport: {
+   805→                                once: !0,
+   806→                                amount: .2
+   807→                            },
+   808→                            transition: {
+   809→                                duration: .8,
+   810→                                ease: "easeOut"
+   811→                            }
+   812→                        }), v.jsx("div", {
+   813→                            className: "absolute inset-0 bg-gradient-to-t from-[#0f1923]/60 to-transparent"
+   814→                        })]
+   815→                    }), v.jsxs(tt.div, {
+   816→                        className: "absolute -bottom-6 -right-6 text-[#0f1923] p-6 shadow-xl",
+   817→                        style: {
+   818→                            backgroundColor: "#F2B705"
+   819→                        },
+   820→                        initial: {
+   821→                            opacity: 0,
+   822→                            y: 24,
+   823→                            rotate: -4
+   824→                        },
+   825→                        whileInView: {
+   826→                            opacity: 1,
+   827→                            y: 0,
+   828→                            rotate: 0
+   829→                        },
+   830→                        viewport: {
+   831→                            once: !0,
+   832→                            amount: .3
+   833→                        },
+   834→                        transition: {
+   835→                            duration: .6,
+   836→                            delay: .2
+   837→                        },
+   838→                        children: [v.jsx("div", {
+   839→                            style: {
+   840→                                fontWeight: 800,
+   841→                                fontSize: "2.5rem"
+   842→                            },
+   843→                            children: "+200"
+   844→                        }), v.jsxs("div", {
+   845→                            style: {
+   846→                                fontSize: "0.85rem",
+   847→                                opacity: .8
+   848→                            },
+   849→                            children: ["Proyectos", v.jsx("br", {}), "Completados"]
+   850→                        })]
+   851→                    }), v.jsx("div", {
+   852→                        className: "absolute top-6 -left-4 w-2 h-32",
+   853→                        style: {
+   854→                            backgroundColor: "#F2B705"
+   855→                        }
+   856→                    })]
+   857→                }), v.jsxs(tt.div, {
+   858→                    initial: {
+   859→                        opacity: 0,
+   860→                        x: 26
+   861→                    },
+   862→                    whileInView: {
+   863→                        opacity: 1,
+   864→                        x: 0
+   865→                    },
+   866→                    viewport: {
+   867→                        once: !0,
+   868→                        amount: .2
+   869→                    },
+   870→                    transition: {
+   871→                        duration: .7,
+   872→                        ease: "easeOut"
+   873→                    },
+   874→                    children: [v.jsxs("div", {
+   875→                        className: "inline-flex items-center gap-2 mb-4",
+   876→                        style: {
+   877→                            color: "#F2B705"
+   878→                        },
+   879→                        children: [v.jsx("div", {
+   880→                            className: "w-8 h-0.5",
+   881→                            style: {
+   882→                                backgroundColor: "#F2B705"
+   883→                            }
+   884→                        }), v.jsx("span", {
+   885→                            style: {
+   886→                                fontSize: "0.8rem",
+   887→                                fontWeight: 700,
+   888→                                letterSpacing: "0.1em"
+   889→                            },
+   890→                            children: "SOBRE NOSOTROS"
+   891→                        })]
+   892→                    }), v.jsxs("h2", {
+   893→                        className: "text-[#0f1923] mb-6",
+   894→                        style: {
+   895→                            fontWeight: 800,
+   896→                            fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
+   897→                            lineHeight: 1.2
+   898→                        },
+   899→                        children: ["Expertos en Construcción,", " ", v.jsx("span", {
+   900→                            style: {
+   901→                                color: "#F2B705"
+   902→                            },
+   903→                            children: "Innovación y Calidad"
+   904→                        })]
+   905→                    }), v.jsxs("p", {
+   906→                        className: "text-gray-600 mb-8",
+   907→                        style: {
+   908→                            lineHeight: 1.8,
+   909→                            fontSize: "0.975rem"
+   910→                        },
+   911→                        children: [v.jsx("strong", {
+   912→                            children: "Grupo Construtech S.A. de C.V."
+   913→                        }), " es una empresa ubicada en la Ciudad de México, especializada en construcción, interiorismo y acabados de alta calidad. Nuestro equipo está conformado por profesionales con amplia experiencia en el sector, capaces de desarrollar proyectos residenciales, comerciales e industriales con altos estándares técnicos y estéticos."]
+   914→                    }), v.jsx("ul", {
+   915→                        className: "mb-10 space-y-3",
+   916→                        children: JP.map((e, n) => v.jsxs(tt.li, {
+   917→                            className: "flex items-start gap-3",
+   918→                            initial: {
+   919→                                opacity: 0,
+   920→                                x: 12
+   921→                            },
+   922→                            whileInView: {
+   923→                                opacity: 1,
+   924→                                x: 0
+   925→                            },
+   926→                            viewport: {
+   927→                                once: !0,
+   928→                                amount: .3
+   929→                            },
+   930→                            transition: {
+   931→                                duration: .45,
+   932→                                delay: n * .08
+   933→                            },
+   934→                            children: [v.jsx(cb, {
+   935→                                className: "w-5 h-5 flex-shrink-0 mt-0.5",
+   936→                                style: {
+   937→                                    color: "#F2B705"
+   938→                                }
+   939→                            }), v.jsx("span", {
+   940→                                className: "text-gray-700",
+   941→                                style: {
+   942→                                    fontSize: "0.9rem"
+   943→                                },
+   944→                                children: e
+   945→                            })]
+   946→                        }, n))
+   947→                    }), v.jsxs("div", {
+   948→                        className: "mb-8 rounded-[28px] border border-[#0f1923]/10 bg-[#f8fafb] p-6",
+   949→                        children: [v.jsxs("div", {
+   950→                            className: "mb-4 inline-flex items-center gap-2",
+   951→                            style: {
+   952→                                color: "#F2B705"
+   953→                            },
+   954→                            children: [v.jsx("div", {
+   955→                                className: "h-0.5 w-8 bg-[#F2B705]"
+   956→                            }), v.jsx("span", {
+   957→                                style: {
+   958→                                    fontSize: "0.72rem",
+   959→                                    fontWeight: 800,
+   960→                                    letterSpacing: "0.12em"
+   961→                                },
+   962→                                children: "ENFOQUE OPERATIVO"
+   963→                            })]
+   964→                        }), v.jsx("p", {
+   965→                            className: "text-gray-600",
+   966→                            style: {
+   967→                                fontSize: "0.9rem",
+   968→                                lineHeight: 1.7
+   969→                            },
+   970→                            children: "Nuestra forma de trabajo combina diseño, planificación y ejecución real en campo. Desde la definición del proyecto hasta la entrega final, cada decisión se orienta a la funcionalidad, la calidad visual y la eficiencia constructiva."
+   971→                        })]
+   972→                    }), v.jsxs("div", {
+   973→                        className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+   974→                        children: [v.jsxs(tt.div, {
+   975→                            className: "bg-gray-50 border border-gray-100 p-5 transition-colors duration-300",
+   976→                            onMouseEnter: e => e.currentTarget.style.borderColor = "rgba(242,183,5,0.4)",
+   977→                            onMouseLeave: e => e.currentTarget.style.borderColor = "#f3f4f6",
+   978→                            whileHover: {
+   979→                                y: -4
+   980→                            },
+   981→                            children: [v.jsxs("div", {
+   982→                                className: "flex items-center gap-2 mb-3",
+   983→                                children: [v.jsx("div", {
+   984→                                    className: "w-8 h-8 flex items-center justify-center",
+   985→                                    style: {
+   986→                                        backgroundColor: "rgba(242,183,5,0.1)"
+   987→                                    },
+   988→                                    children: v.jsx(Hb, {
+   989→                                        className: "w-4 h-4",
+   990→                                        style: {
+   991→                                            color: "#F2B705"
+   992→                                        }
+   993→                                    })
+   994→                                }), v.jsx("span", {
+   995→                                    className: "text-[#0f1923]",
+   996→                                    style: {
+   997→                                        fontWeight: 700,
+   998→                                        fontSize: "0.9rem"
+   999→                                    },
+  1000→                                    children: "Misión"
+  1001→                                })]
+  1002→                            }), v.jsx("p", {
+  1003→                                className: "text-gray-600",
+  1004→                                style: {
+  1005→                                    fontSize: "0.85rem",
+  1006→                                    lineHeight: 1.7
+  1007→                                },
+  1008→                                children: "Ofrecer soluciones integrales que combinen funcionalidad, diseño y eficiencia, garantizando la satisfacción total de cada cliente."
+  1009→                            })]
+  1010→                        }), v.jsxs(tt.div, {
+  1011→                            className: "bg-gray-50 border border-gray-100 p-5 transition-colors duration-300",
+  1012→                            onMouseEnter: e => e.currentTarget.style.borderColor = "rgba(242,183,5,0.4)",
+  1013→                            onMouseLeave: e => e.currentTarget.style.borderColor = "#f3f4f6",
+  1014→                            whileHover: {
+  1015→                                y: -4
+  1016→                            },
+  1017→                            children: [v.jsxs("div", {
+  1018→                                className: "flex items-center gap-2 mb-3",
+  1019→                                children: [v.jsx("div", {
+  1020→                                    className: "w-8 h-8 flex items-center justify-center",
+  1021→                                    style: {
+  1022→                                        backgroundColor: "rgba(242,183,5,0.1)"
+  1023→                                    },
+  1024→                                    children: v.jsx(gb, {
+  1025→                                        className: "w-4 h-4",
+  1026→                                        style: {
+  1027→                                            color: "#F2B705"
+  1028→                                        }
+  1029→                                    })
+  1030→                                }), v.jsx("span", {
+  1031→                                    className: "text-[#0f1923]",
+  1032→                                    style: {
+  1033→                                        fontWeight: 700,
+  1034→                                        fontSize: "0.9rem"
+  1035→                                    },
+  1036→                                    children: "Visión"
+  1037→                                })]
+  1038→                            }), v.jsx("p", {
+  1039→                                className: "text-gray-600",
+  1040→                                style: {
+  1041→                                    fontSize: "0.85rem",
+  1042→                                    lineHeight: 1.7
+  1043→                                },
+  1044→                                children: "Consolidarnos como una empresa líder en el mercado de la construcción e interiorismo en México, destacando por nuestra calidad, compromiso e innovación."
+  1045→                            })]
+  1046→                        })]
+  1047→                    })]
+  1048→                })]
+  1049→            })
+  1050→        })
+  1051→    })
+  1052→}
+  1053→const t4 = ["Residencial", "Comercial", "Industrial", "Interiorismo", "Remodelación", "Consultoría"];
+  1054→
+  1055→function n4() {
+  1056→    return v.jsx("section", {
+  1057→        className: "border-y border-[#0f1923]/5 bg-white py-8",
+  1058→        children: v.jsxs("div", {
+  1059→            className: "mx-auto max-w-7xl px-6",
+  1060→            children: [v.jsx("div", {
+  1061→                className: "mb-5 text-center",
+  1062→                children: v.jsx("span", {
+  1063→                    className: "inline-block rounded-full border border-[#F2B705]/30 bg-[#F2B705]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0f1923]",
+  1064→                    children: "Confiabilidad"
+  1065→                })
+  1066→            }), v.jsx("div", {
+  1067→                className: "grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6",
+  1068→                children: t4.map(e => v.jsx("div", {
+  1069→                    className: "flex items-center justify-center rounded-xl border border-[#0f1923]/8 bg-[#f8f9fa] px-4 py-4 text-center text-sm font-semibold tracking-[0.08em] text-[#0f1923]/80 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#F2B705]/40 hover:bg-[#F2B705]/5",
+  1070→                    children: e
+  1071→                }, e))
+  1072→            })]
+  1073→        })
+  1074→    })
+  1075→}
+  1076→const Al = "/assets/HERRERIA_CANCHA-WScwCVFr.jpg",
+  1077→    Cf = "/assets/CASETA_3-BCDr8rA9.png",
+  1078→    kf = "/assets/JARDIN_2-CYLxEkJQ.jpg",
+  1079→    r4 = "https://images.unsplash.com/photo-1669387448840-610c588f003d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+  1080→    i4 = "https://images.unsplash.com/photo-1760237655540-8197ef24838b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+  1081→    o4 = "https://images.unsplash.com/photo-1776773299716-1ebcd15ac61b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+  1082→    s4 = "https://images.unsplash.com/photo-1751486403890-793880b12adb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+  1083→    a4 = [{
+  1084→        icon: tb,
+  1085→        title: "Construcción Integral",
+  1086→        description: "Planificación, gestión de recursos, supervisión técnica y entrega final. Proyectos residenciales, comerciales e industriales cumpliendo normativas vigentes.",
+  1087→        image: Al,
+  1088→        tag: "Residencial · Comercial · Industrial"
+  1089→    }, {
+  1090→        icon: wb,
+  1091→        title: "Remodelaciones",
+  1092→        description: "Remodelación integral de viviendas y departamentos: pisos, muros, plafones, iluminación, closets y optimización de espacios con acabados de calidad.",
+  1093→        image: Cf,
+  1094→        tag: "Vivienda · Oficina · Comercio"
+  1095→    }, {
+  1096→        icon: Fb,
+  1097→        title: "Interiorismo y Diseño 3D",
+  1098→        description: "Creamos espacios funcionales, estéticos y personalizados con conceptos de diseño sólidos y visualizaciones 3D realistas antes de construir.",
+  1099→        image: r4,
+  1100→        tag: "Diseño · Render 3D · Decoración"
+  1101→    }, {
+  1102→        icon: Pb,
+  1103→        title: "Acabados Arquitectónicos",
+  1104→        description: "Pisos, recubrimientos de muros, plafones decorativos, pinturas especializadas y tablaroca. Propuestas modernas, minimalistas, clásicas o industriales.",
+  1105→        image: i4,
+  1106→        tag: "Pisos · Muros · Plafones"
+  1107→    }, {
+  1108→        icon: Gb,
+  1109→        title: "Techado y Velarias",
+  1110→        description: "Instalación y reparación de sistemas de techado y velarias estructurales. Cubiertas duraderas con aislamiento térmico y mínimo mantenimiento.",
+  1111→        image: Ll,
+  1112→        tag: "Techados · Velarias · Cubiertas"
+  1113→    }, {
+  1114→        icon: eE,
+  1115→        title: "Fontanería y Electricidad",
+  1116→        description: "Instalación, reparación y mantenimiento de sistemas eléctricos e hidráulicos. Redes seguras, eficientes y en cumplimiento de normativas vigentes.",
+  1117→        image: s4,
+  1118→        tag: "Eléctrica · Hidráulica · Sanitaria"
+  1119→    }, {
+  1120→        icon: pb,
+  1121→        title: "Carpintería y Cancelería",
+  1122→        description: "Carpintería fina personalizada: clósets, cocinas integrales, puertas, muebles a medida. Canceles y cristales en vidrio templado y aluminio.",
+  1123→        image: o4,
+  1124→        tag: "Muebles · Puertas · Cristales"
+  1125→    }, {
+  1126→        icon: qb,
+  1127→        title: "Proyectos Llave en Mano",
+  1128→        description: "Conceptualización, diseño, gestión, ejecución y supervisión integral. Materializamos cada idea en un espacio funcional, seguro y estéticamente impecable.",
+  1129→        image: kf,
+  1130→        tag: "Integral · Supervisión · Entrega"
+  1131→    }];
+  1132→
+  1133→function l4() {
+  1134→    return v.jsx("section", {
+  1135→        id: "servicios",
+  1136→        className: "py-24 bg-[#f8f9fa]",
+  1137→        children: v.jsxs("div", {
+  1138→            className: "max-w-7xl mx-auto px-6",
+  1139→            children: [v.jsxs("div", {
+  1140→                className: "text-center mb-14",
+  1141→                children: [v.jsxs("div", {
+  1142→                    className: "inline-flex items-center gap-2 mb-4 justify-center",
+  1143→                    style: {
+  1144→                        color: "#F2B705"
+  1145→                    },
+  1146→                    children: [v.jsx("div", {
+  1147→                        className: "w-8 h-0.5",
+  1148→                        style: {
+  1149→                            backgroundColor: "#F2B705"
+  1150→                        }
+
+[showing lines 1-1150 of 5878; use offset=1151 with limit to continue reading]

@@ -1,39 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "CONSTRUTECH | Construcción e Interiorismo de Alta Calidad · CDMX",
+  title: "Landing Grupo Construtech",
   description:
-    "Empresa líder en construcción e interiorismo en Ciudad de México. Soluciones integrales para proyectos residenciales, comerciales e industriales. +15 años de experiencia, +200 obras entregadas.",
+    "Grupo Construtech S.A. de C.V. — Construcción, interiorismo y acabados de alta calidad en la Ciudad de México. Soluciones integrales para proyectos residenciales, comerciales e industriales.",
   keywords: [
     "construcción",
     "interiorismo",
     "remodelaciones CDMX",
-    "obra civil",
-    "CONSTRUTECH",
+    "velarias",
+    "Grupo Construtech",
     "constructora Ciudad de México",
   ],
-  authors: [{ name: "CONSTRUTECH" }],
+  authors: [{ name: "Grupo Construtech S.A. de C.V." }],
   icons: {
-    icon: "/img/logo-icon.png",
+    icon: "/assets/image-CCeDO6ue.png",
   },
   openGraph: {
-    title: "CONSTRUTECH | Construcción e Interiorismo de Alta Calidad",
+    title: "Grupo Construtech | Construcción e Interiorismo de Alta Calidad",
     description:
-      "Soluciones integrales para proyectos residenciales, comerciales e industriales en CDMX.",
-    siteName: "CONSTRUTECH",
+      "Soluciones integrales para proyectos residenciales, comerciales e industriales en la Ciudad de México.",
+    siteName: "Grupo Construtech",
     type: "website",
   },
 };
@@ -45,9 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
-      >
+      <body className="antialiased bg-background text-foreground">
         {children}
         <Toaster />
       </body>
