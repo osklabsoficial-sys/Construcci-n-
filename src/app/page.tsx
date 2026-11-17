@@ -15,17 +15,8 @@ import {
   Building2,
   Hammer,
   Palette,
-  Layers,
-  Tent,
-  Zap,
-  DoorOpen,
-  Wrench,
-  Award,
-  Star,
-  Lightbulb,
   ShieldCheck,
-  Clock,
-  Users,
+  Star,
   Search,
   LayoutGrid,
   HardHat,
@@ -35,7 +26,6 @@ import {
   Linkedin,
   ChevronLeft,
   ChevronRight,
-  House,
   Mail,
   Loader2,
 } from 'lucide-react'
@@ -116,153 +106,58 @@ const STATS = [
   { value: '+15', label: 'Años de experiencia' },
   { value: '+200', label: 'Proyectos completados' },
   { value: '+50', label: 'Clientes satisfechos' },
-  { value: '100%', label: 'Compromiso de calidad' },
+  { value: '100%', label: 'Compromiso y garantía' },
 ]
 
 const CHECKLIST = [
   'Equipo con enfoque técnico, operativo y de atención al detalle',
-  'Soluciones para proyectos residenciales, comerciales e industriales',
-  'Coordinación de obra, materiales y proveedores bajo criterios de calidad',
-  'Supervisión constante para mantener estándares de ejecución y seguridad',
-  'Diseño y acabados pensados para funcionalidad, estética y durabilidad',
-  'Comunicación clara y directa en cada etapa del proyecto',
+  'Cronograma y presupuesto claros desde la planeación',
+  'Cumplimiento de normativas técnicas vigentes en cada etapa',
+  'Diseño y acabados orientados a funcionalidad, estética y durabilidad',
+  'Comunicación clara y directa con el cliente en todo el proceso',
 ]
 
 const CATEGORIES = [
   'Residencial',
   'Comercial',
   'Industrial',
-  'Interiorismo',
   'Remodelación',
-  'Consultoría',
+  'Interiorismo',
+  'Mantenimiento',
 ]
 
 const SERVICES = [
   {
     icon: Building2,
-    title: 'Construcción Integral',
+    title: 'Construcción e Infraestructura',
     description:
-      'Planificación, gestión de recursos, supervisión técnica y entrega final. Proyectos residenciales, comerciales e industriales cumpliendo normativas vigentes.',
+      'Ejecución de obra civil, naves industriales, techumbres, velarias y estructuras metálicas.',
     image: IMG_HERRERIA,
-    tag: 'Residencial · Comercial · Industrial',
+    tag: 'Obra Civil · Estructuras · Velarias',
   },
   {
     icon: Hammer,
-    title: 'Remodelaciones',
+    title: 'Remodelaciones y Acabados',
     description:
-      'Remodelación integral de viviendas y departamentos: pisos, muros, plafones, iluminación, closets y optimización de espacios con acabados de calidad.',
-    image: IMG_CASETA,
-    tag: 'Vivienda · Oficina · Comercio',
+      'Transformación de espacios, oficinas, comercios y viviendas, con tablaroca y pintura.',
+    image: IMG_RESTAURANTE,
+    tag: 'Oficinas · Comercios · Viviendas',
   },
   {
     icon: Palette,
-    title: 'Interiorismo y Diseño 3D',
+    title: 'Interiorismo y Exteriores',
     description:
-      'Creamos espacios funcionales, estéticos y personalizados con conceptos de diseño sólidos y visualizaciones 3D realistas antes de construir.',
-    image: IMG_INTERIORISMO,
-    tag: 'Diseño · Render 3D · Decoración',
-  },
-  {
-    icon: Layers,
-    title: 'Acabados Arquitectónicos',
-    description:
-      'Pisos, recubrimientos de muros, plafones decorativos, pinturas especializadas y tablaroca. Propuestas modernas, minimalistas, clásicas o industriales.',
-    image: IMG_ACABADOS,
-    tag: 'Pisos · Muros · Plafones',
-  },
-  {
-    icon: Tent,
-    title: 'Techado y Velarias',
-    description:
-      'Instalación y reparación de sistemas de techado y velarias estructurales. Cubiertas duraderas con aislamiento térmico y mínimo mantenimiento.',
-    image: IMG_CANCHA,
-    tag: 'Techados · Velarias · Cubiertas',
-  },
-  {
-    icon: Zap,
-    title: 'Fontanería y Electricidad',
-    description:
-      'Instalación, reparación y mantenimiento de sistemas eléctricos e hidráulicos. Redes seguras, eficientes y en cumplimiento de normativas vigentes.',
-    image: IMG_INSTALACIONES,
-    tag: 'Eléctrica · Hidráulica · Sanitaria',
-  },
-  {
-    icon: DoorOpen,
-    title: 'Carpintería y Cancelería',
-    description:
-      'Carpintería fina personalizada: clósets, cocinas integrales, puertas, muebles a medida. Canceles y cristales en vidrio templado y aluminio.',
-    image: IMG_CARPINTERIA,
-    tag: 'Muebles · Puertas · Cristales',
-  },
-  {
-    icon: Wrench,
-    title: 'Proyectos Llave en Mano',
-    description:
-      'Conceptualización, diseño, gestión, ejecución y supervisión integral. Materializamos cada idea en un espacio funcional, seguro y estéticamente impecable.',
+      'Diseño y adecuación de espacios, iluminación, paisajismo y áreas comunes.',
     image: IMG_JARDIN,
-    tag: 'Integral · Supervisión · Entrega',
-  },
-  {
-    icon: House,
-    title: 'Adecuaciones Residenciales',
-    description:
-      'Adecuaciones y mejoras para tu hogar: ampliaciones, divisiones de espacios, pérgolas, terrazas y optimización de áreas para mayor funcionalidad y confort.',
-    image: IMG_ADECUACIONES,
-    tag: 'Ampliaciones · Pérgolas · Mejoras',
-  },
-]
-
-const SERVICE_PILLARS = [
-  {
-    title: 'Construcción y estructura',
-    text: 'Ejecución de proyectos con base en planificación, coordinación y control técnico en cada etapa.',
-  },
-  {
-    title: 'Acabados y remodelación',
-    text: 'Soluciones estéticas y funcionales para viviendas, oficinas, comercios y espacios de uso intensivo.',
-  },
-  {
-    title: 'Interiorismo y exteriores',
-    text: 'Diseño y mejora de espacios, jardines, zonas de uso común y áreas de mayor impacto visual.',
-  },
-]
-
-const VALUES = [
-  {
-    icon: Award,
-    title: 'Profesionalismo',
-    description:
-      'Ejecutamos cada trabajo con responsabilidad y precisión, cumpliendo los más altos estándares técnicos.',
-  },
-  {
-    icon: Star,
-    title: 'Calidad',
-    description:
-      'Utilizamos materiales de primera y procesos eficientes para garantizar resultados duraderos y excepcionales.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Innovación',
-    description:
-      'Integramos soluciones modernas en diseño y construcción, adoptando nuevas tecnologías y métodos.',
+    tag: 'Iluminación · Paisajismo · Áreas Comunes',
   },
   {
     icon: ShieldCheck,
-    title: 'Honestidad',
+    title: 'Mantenimiento y Protección',
     description:
-      'Relaciones transparentes y comunicación clara con nuestros clientes en cada etapa del proyecto.',
-  },
-  {
-    icon: Clock,
-    title: 'Compromiso',
-    description:
-      'Cumplimos tiempos, expectativas y estándares de seguridad. Tu proyecto es siempre nuestra prioridad.',
-  },
-  {
-    icon: Users,
-    title: 'Trabajo Colaborativo',
-    description:
-      'Coordinación eficiente entre equipos y clientes para resultados cohesionados de excelencia.',
+      'Impermeabilización de azoteas y mantenimiento preventivo y correctivo de inmuebles.',
+    image: IMG_IMPERMEABILIZACION,
+    tag: 'Impermeabilización · Preventivo · Correctivo',
   },
 ]
 
@@ -270,9 +165,9 @@ const PROJECTS = [
   {
     id: 1,
     title: 'Velaria para Gradas y Cancha',
-    category: 'Construcción · Herrería',
-    galleryCategory: 'Obra Civil',
-    type: 'Obra Civil · Estructura Metálica',
+    category: 'Construcción e Infraestructura',
+    galleryCategory: 'Construcción e Infraestructura',
+    type: 'Estructura Metálica',
     description:
       'Diseño, fabricación e instalación de velaría para zona de gradas, proporcionando sombra, funcionalidad e integración al entorno de las canchas deportivas.',
     image: IMG_HERRERIA,
@@ -281,9 +176,9 @@ const PROJECTS = [
   {
     id: 2,
     title: 'Techumbre para Zona Deportiva',
-    category: 'Obra Civil · Estructural',
-    galleryCategory: 'Obra Civil',
-    type: 'Velaria · Estructura Metálica',
+    category: 'Construcción e Infraestructura',
+    galleryCategory: 'Construcción e Infraestructura',
+    type: 'Estructura Metálica',
     description:
       'Construcción e instalación de techumbre estructural sobre área deportiva, garantizando protección solar y continuidad de actividades al aire libre.',
     image: IMG_CANCHA,
@@ -291,21 +186,21 @@ const PROJECTS = [
   },
   {
     id: 3,
-    title: 'Construcción de Áreas de Lectura',
-    category: 'Paisajismo · Exteriores',
-    galleryCategory: 'Paisajismo',
-    type: 'Paisajismo · Obra Exterior',
+    title: 'Diseño de Áreas de Lectura',
+    category: 'Interiorismo y Exteriores',
+    galleryCategory: 'Interiorismo y Exteriores',
+    type: 'Paisajismo',
     description:
-      'Construcción y adecuación de jardines y áreas de lectura al aire libre con bancas de concreto y andadores.',
+      'Diseño y adecuación de jardines y áreas de lectura al aire libre con bancas de concreto y andadores.',
     image: IMG_JARDIN,
     size: 'medium',
   },
   {
     id: 4,
     title: 'Remodelación de Casetas',
-    category: 'Remodelación Integral',
-    galleryCategory: 'Remodelación',
-    type: 'Remodelación · Acabados',
+    category: 'Remodelaciones y Acabados',
+    galleryCategory: 'Remodelaciones y Acabados',
+    type: 'Acabados',
     description:
       'Remodelación integral incluyendo resanado, aplanado, pintura, instalación eléctrica, ventanas y mobiliario de baño.',
     image: IMG_CASETA,
@@ -314,20 +209,20 @@ const PROJECTS = [
   {
     id: 5,
     title: 'Remodelación Residencial',
-    category: 'Interiorismo · Acabados',
-    galleryCategory: 'Interiorismo',
-    type: 'Interiorismo · Remodelación',
+    category: 'Remodelaciones y Acabados',
+    galleryCategory: 'Remodelaciones y Acabados',
+    type: 'Interiorismo · Acabados',
     description:
-      'Remodelación integral de departamento: pisos, muros, plafones, iluminación y closets con acabados de alta calidad.',
+      'Remodelación integral de departamento: pisos, muros, plafones, iluminación y closets con acabados duraderos.',
     image: IMG_CASA,
     size: 'medium',
   },
   {
     id: 6,
     title: 'Remodelación de Restaurante',
-    category: 'Remodelación Integral',
-    galleryCategory: 'Remodelación',
-    type: 'Remodelación · Acabados',
+    category: 'Remodelaciones y Acabados',
+    galleryCategory: 'Remodelaciones y Acabados',
+    type: 'Acabados',
     description:
       'Remodelación integral de restaurante: barra, comedor, pisos, iluminación y acabados para renovar la imagen y mejorar la experiencia de los clientes.',
     image: IMG_RESTAURANTE,
@@ -335,21 +230,21 @@ const PROJECTS = [
   },
   {
     id: 7,
-    title: 'Impermeabilización de Azotea',
-    category: 'Mantenimiento · Protección',
-    galleryCategory: 'Obra Civil',
-    type: 'Impermeabilización · Obra Exterior',
+    title: 'Mantenimiento de Cubiertas',
+    category: 'Mantenimiento y Protección',
+    galleryCategory: 'Mantenimiento y Protección',
+    type: 'Impermeabilización',
     description:
-      'Aplicación de sistema de impermeabilización sobre azotea, garantizando protección contra humedad y filtraciones, y prolongando la vida útil de la construcción.',
+      'Aplicación de sistema de impermeabilización sobre cubiertas y azoteas, garantizando protección contra humedad y filtraciones, y prolongando la vida útil de la construcción.',
     image: IMG_IMPERMEABILIZACION,
     size: 'medium',
   },
   {
     id: 8,
     title: 'Construcción de Foro al Aire Libre',
-    category: 'Obra Civil · Estructural',
-    galleryCategory: 'Obra Civil',
-    type: 'Construcción · Estructura Metálica',
+    category: 'Construcción e Infraestructura',
+    galleryCategory: 'Construcción e Infraestructura',
+    type: 'Obra Civil',
     description:
       'Construcción de foro al aire libre con plataforma de concreto y estructura metálica, integrado al entorno para eventos y actividades públicas.',
     image: IMG_FORO,
@@ -357,20 +252,26 @@ const PROJECTS = [
   },
 ]
 
-const GALLERY_FILTERS = ['Todos', 'Obra Civil', 'Paisajismo', 'Remodelación', 'Interiorismo']
+const GALLERY_FILTERS = [
+  'Todos',
+  'Construcción e Infraestructura',
+  'Remodelaciones y Acabados',
+  'Interiorismo y Exteriores',
+  'Mantenimiento y Protección',
+]
 
 const GALLERY_CARDS = [
   {
-    title: 'Especialidades',
-    text: 'Construcción, acabados, remodelación y solución integral para espacios residenciales y comerciales.',
+    title: 'Líneas de servicio',
+    text: 'Construcción e infraestructura, remodelaciones y acabados, interiorismo y exteriores, y mantenimiento y protección.',
   },
   {
     title: 'Ejecución',
-    text: 'Coordinación de materiales, tiempos, obra y supervisión para mantener calidad y orden en cada etapa.',
+    text: 'Coordinación de materiales, tiempos y obra con supervisión técnica permanente en cada etapa.',
   },
   {
     title: 'Perfil del cliente',
-    text: 'Atención personalizada para proyectos con prioridad en funcionalidad, estética y resultados duraderos.',
+    text: 'Atención personalizada para proyectos residenciales, comerciales e industriales con prioridad en funcionalidad y resultados duraderos.',
   },
 ]
 
@@ -380,7 +281,7 @@ const PROCESS_STEPS = [
     number: '01',
     title: 'Análisis y Diseño',
     description:
-      'Realizamos un levantamiento detallado del proyecto, analizamos los requerimientos y desarrollamos propuestas de diseño con renders 3D y planos técnicos personalizados.',
+      'Definición de objetivos, alcance, renders 3D y planos técnicos.',
     accent: YELLOW,
   },
   {
@@ -388,7 +289,7 @@ const PROCESS_STEPS = [
     number: '02',
     title: 'Planeación y Gestión',
     description:
-      'Elaboramos el plan de obra, cronograma de actividades, presupuesto detallado y coordinamos con proveedores y personal especializado para cada etapa.',
+      'Cronograma de actividades, coordinación técnica, materiales y presupuestos.',
     accent: DARK,
   },
   {
@@ -396,7 +297,7 @@ const PROCESS_STEPS = [
     number: '03',
     title: 'Ejecución de Obra',
     description:
-      'Iniciamos la construcción con supervisión técnica permanente, control de calidad en cada etapa y comunicación constante con el cliente.',
+      'Construcción con supervisión técnica permanente y control de calidad en obra.',
     accent: YELLOW,
   },
   {
@@ -404,15 +305,9 @@ const PROCESS_STEPS = [
     number: '04',
     title: 'Entrega Final',
     description:
-      'Realizamos pruebas de calidad, limpieza general del espacio y entregamos el proyecto terminado con garantía, manuales de uso y acompañamiento post-obra.',
+      'Pruebas de calidad, limpieza general, manuales de uso y acompañamiento post-obra.',
     accent: DARK,
   },
-]
-
-const PROCESS_MINI = [
-  'Definición de objetivos, alcance y prioridades del proyecto.',
-  'Coordinación técnica con materiales, proveedores y tiempos de ejecución.',
-  'Seguimiento activo durante obra para mantener calidad, orden y cumplimiento.',
 ]
 
 const TESTIMONIALS = [
@@ -440,27 +335,22 @@ const FAQS = [
   {
     question: '¿Qué tipo de proyectos manejan?',
     answer:
-      'Trabajamos en proyectos residenciales, comerciales e industriales, incluyendo remodelaciones, acabados, techados, velarias, interiorismo y construcciones integrales.',
+      'Proyectos residenciales, comerciales e industriales de construcción, remodelación, acabados, techumbres, velarias, interiorismo y mantenimiento.',
   },
   {
     question: '¿Hacen trabajo a medida?',
     answer:
-      'Sí. Diseñamos y ejecutamos soluciones a medida según el tipo de espacio, necesidades del cliente, presupuesto y objetivos del proyecto.',
-  },
-  {
-    question: '¿Puedo solicitar una cotización?',
-    answer:
-      'Claro. Puedes contactarnos por WhatsApp o llenar el formulario de contacto para recibir información detallada sobre tu proyecto y el siguiente paso.',
+      'Sí, diseñamos y ejecutamos soluciones personalizadas según las necesidades del cliente.',
   },
   {
     question: '¿Trabajan en toda la Ciudad de México?',
     answer:
-      'Sí, atendemos proyectos en la Ciudad de México y zonas cercanas, con coordinación directa para asegurar la calidad y puntualidad de cada obra.',
+      'Sí, con cobertura en la Ciudad de México y área metropolitana.',
   },
   {
-    question: '¿Cuánto tarda un proyecto?',
+    question: '¿Cómo garantizan la calidad?',
     answer:
-      'El tiempo depende del tipo, tamaño y complejidad del proyecto. En la primera revisión definimos tiempos estimados, cronograma y alcance exacto.',
+      'Con supervisión técnica constante, materiales certificados y cumplimiento de las normativas vigentes.',
   },
 ]
 
@@ -472,12 +362,10 @@ const FOOTER_LINKS = {
     { label: 'Proceso de trabajo', href: '#proceso' },
   ],
   servicios: [
-    { label: 'Construcción integral', href: '#servicios' },
-    { label: 'Remodelaciones', href: '#servicios' },
-    { label: 'Interiorismo y diseño 3D', href: '#servicios' },
-    { label: 'Acabados arquitectónicos', href: '#servicios' },
-    { label: 'Techado y velarias', href: '#servicios' },
-    { label: 'Carpintería y cancelería', href: '#servicios' },
+    { label: 'Construcción e infraestructura', href: '#servicios' },
+    { label: 'Remodelaciones y acabados', href: '#servicios' },
+    { label: 'Interiorismo y exteriores', href: '#servicios' },
+    { label: 'Mantenimiento y protección', href: '#servicios' },
   ],
 }
 
@@ -656,7 +544,7 @@ function Hero() {
                 fontWeight: 600,
               }}
             >
-              EMPRESA LÍDER EN CONSTRUCCIÓN · CDMX
+              CONSTRUCCIÓN · REMODELACIÓN · INTERIORISMO · CDMX
             </span>
           </motion.div>
 
@@ -667,8 +555,8 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            Construcción e Interiorismo{' '}
-            <span style={{ color: YELLOW }}>de Alta Calidad</span>
+            Construcción e Interiorismo con{' '}
+            <span style={{ color: YELLOW }}>Estándares de Excelencia</span>
           </motion.h1>
 
           <motion.p
@@ -678,9 +566,8 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            Soluciones integrales para proyectos residenciales, comerciales e
-            industriales. Transformamos ideas en espacios excepcionales con
-            profesionalismo y precisión.
+            Transformamos ideas en espacios excepcionales con
+            profesionalismo, precisión y cumplimiento de normativas técnicas.
           </motion.p>
 
           <motion.div
@@ -821,21 +708,33 @@ function Nosotros() {
               className="text-[#0f1923] mb-6"
               style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
             >
-              Expertos en Construcción,{' '}
-              <span style={{ color: YELLOW }}>Innovación y Calidad</span>
+              Expertos en Construcción e{' '}
+              <span style={{ color: YELLOW }}>Innovación</span>
             </h2>
 
             <p
-              className="text-gray-600 mb-8"
+              className="text-gray-600 mb-6"
               style={{ lineHeight: 1.8, fontSize: '0.975rem' }}
             >
-              <strong>Grupo Construtech S.A. de C.V.</strong> es una empresa ubicada
-              en la Ciudad de México, especializada en construcción, interiorismo y
-              acabados de alta calidad. Nuestro equipo está conformado por
-              profesionales con amplia experiencia en el sector, capaces de
-              desarrollar proyectos residenciales, comerciales e industriales con
-              altos estándares técnicos y estéticos.
+              <strong>Grupo Construtech S.A. de C.V.</strong> es una empresa con
+              sede en la Ciudad de México, especializada en servicios integrales
+              de construcción, remodelación e interiorismo para proyectos
+              residenciales, comerciales e industriales.
             </p>
+
+            <div
+              className="mb-8 border-l-4 pl-5"
+              style={{ borderColor: YELLOW }}
+            >
+              <p
+                className="text-gray-700"
+                style={{ lineHeight: 1.8, fontSize: '0.975rem' }}
+              >
+                Nos basamos en <strong>estrictos estándares de seguridad (NOM)</strong>,
+                control de calidad en obra y el uso de <strong>materiales certificados</strong>
+                {' '}en cada proyecto.
+              </p>
+            </div>
 
             <ul className="mb-10 space-y-3">
               {CHECKLIST.map((item, i) => (
@@ -873,8 +772,8 @@ function Nosotros() {
               >
                 Nuestra forma de trabajo combina diseño, planificación y ejecución
                 real en campo. Desde la definición del proyecto hasta la entrega
-                final, cada decisión se orienta a la funcionalidad, la calidad
-                visual y la eficiencia constructiva.
+                final, cada decisión se orienta a la funcionalidad, la precisión
+                constructiva y la eficiencia del proyecto.
               </p>
             </div>
 
@@ -928,9 +827,9 @@ function Nosotros() {
                   className="text-gray-600"
                   style={{ fontSize: '0.85rem', lineHeight: 1.7 }}
                 >
-                  Consolidarnos como una empresa líder en el mercado de la
-                  construcción e interiorismo en México, destacando por nuestra
-                  calidad, compromiso e innovación.
+                  Consolidarnos como una empresa referente en construcción,
+                  remodelación e interiorismo en México, reconocida por su
+                  cumplimiento, compromiso e innovación.
                 </p>
               </motion.div>
             </div>
@@ -949,7 +848,7 @@ function Categories() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-5 text-center">
           <span className="inline-block rounded-full border border-[#F2B705]/30 bg-[#F2B705]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0f1923]">
-            Confiabilidad
+            Tipos de proyecto
           </span>
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
@@ -1012,38 +911,15 @@ function Servicios() {
             className="text-[#0f1923] mb-4"
             style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
           >
-            Soluciones para <span style={{ color: YELLOW }}>cada etapa</span>
+            Nuestros <span style={{ color: YELLOW }}>Servicios</span>
           </h2>
           <p
             className="text-gray-500 max-w-2xl mx-auto"
             style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
           >
-            Servicios integrales de construcción e interiorismo con enfoque en
-            calidad, precisión y resultados funcionales.
+            Cuatro líneas de servicio que cubren todo el ciclo del proyecto:
+            construcción, remodelación, interiorismo y mantenimiento.
           </p>
-        </div>
-
-        <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {SERVICE_PILLARS.map((pillar) => (
-            <div
-              key={pillar.title}
-              className="rounded-[24px] border border-[#0f1923]/8 bg-white p-5 shadow-sm"
-            >
-              <div className="mb-3 h-1 w-12 bg-[#F2B705]" />
-              <h3
-                className="mb-2 text-[#0f1923]"
-                style={{ fontWeight: 700, fontSize: '0.95rem' }}
-              >
-                {pillar.title}
-              </h3>
-              <p
-                className="text-gray-500"
-                style={{ fontSize: '0.82rem', lineHeight: 1.7 }}
-              >
-                {pillar.text}
-              </p>
-            </div>
-          ))}
         </div>
 
         <div className="relative">
@@ -1124,79 +1000,6 @@ function Servicios() {
   )
 }
 
-/* ============================== Valores ============================== */
-
-function Valores() {
-  return (
-    <section className="py-24 bg-[#0f1923] relative overflow-hidden">
-      <div
-        className="absolute -top-20 right-[-8%] h-72 w-72 rounded-full bg-[#F2B705]/10 blur-3xl"
-        style={{ animationDelay: '0.5s' }}
-      />
-      <div
-        className="absolute bottom-[-10%] left-[-6%] h-64 w-64 rounded-full bg-[#F2B705]/8 blur-3xl"
-        style={{ animationDelay: '1.4s' }}
-      />
-      <div
-        className="absolute top-1/3 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-white/4 blur-3xl"
-        style={{ animationDelay: '2.2s' }}
-      />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 mb-4 justify-center" style={{ color: YELLOW }}>
-            <div className="w-8 h-0.5" style={{ backgroundColor: YELLOW }} />
-            <span
-              style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em' }}
-            >
-              NUESTROS VALORES
-            </span>
-            <div className="w-8 h-0.5" style={{ backgroundColor: YELLOW }} />
-          </div>
-          <h2
-            className="text-white mb-4"
-            style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
-          >
-            Pilares que nos <span style={{ color: YELLOW }}>distinguen</span>
-          </h2>
-          <p
-            className="text-gray-400 max-w-xl mx-auto"
-            style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
-          >
-            Trabajamos con principios claros para construir resultados confiables,
-            funcionales y de alto nivel.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {VALUES.map((value) => (
-            <div
-              key={value.title}
-              className="group border border-white/10 bg-white/3 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#F2B705]/30 hover:bg-[#F2B705]/5"
-            >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-md border border-[#F2B705]/20 bg-[#F2B705]/10">
-                <value.icon className="h-5 w-5" style={{ color: YELLOW }} />
-              </div>
-              <h3
-                className="mb-3 text-white"
-                style={{ fontWeight: 700, fontSize: '1.03rem' }}
-              >
-                {value.title}
-              </h3>
-              <p
-                className="text-gray-400"
-                style={{ fontSize: '0.875rem', lineHeight: 1.7 }}
-              >
-                {value.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 /* ============================== Proyectos ============================== */
 
 function Proyectos({ onOpenGallery }: { onOpenGallery: () => void }) {
@@ -1219,22 +1022,22 @@ function Proyectos({ onOpenGallery }: { onOpenGallery: () => void }) {
                 <span
                   style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em' }}
                 >
-                  PROYECTOS REALIZADOS
+                  PROYECTOS RECIENTES
                 </span>
               </div>
               <h2
                 className="text-[#0f1923]"
                 style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
               >
-                Experiencia en <span style={{ color: YELLOW }}>obra real</span>
+                Nuestro <span style={{ color: YELLOW }}>Portafolio</span>
               </h2>
             </div>
             <p
               className="text-gray-500 max-w-sm"
               style={{ fontSize: '0.9rem', lineHeight: 1.7 }}
             >
-              Cada proyecto refleja nuestro compromiso con la calidad, la
-              puntualidad y la satisfacción total del cliente.
+              Obra real organizada por línea de servicio: construcción,
+              remodelación, interiorismo y mantenimiento.
             </p>
           </motion.div>
 
@@ -1361,34 +1164,15 @@ function Proceso() {
             className="text-[#0f1923] mb-4"
             style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
           >
-            Cómo Trabajamos <span style={{ color: YELLOW }}>Contigo</span>
+            Cómo <span style={{ color: YELLOW }}>Trabajamos</span>
           </h2>
           <p
             className="text-gray-500 max-w-xl mx-auto"
             style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
           >
-            Un proceso claro, transparente y orientado a resultados para que tu
-            proyecto se desarrolle sin contratiempos y con los más altos estándares.
+            Un único proceso de cuatro pasos, del análisis inicial a la entrega
+            final de tu proyecto.
           </p>
-        </div>
-
-        <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {PROCESS_MINI.map((text, i) => (
-            <div
-              key={text}
-              className="rounded-[22px] border border-[#0f1923]/8 bg-white p-5 shadow-sm"
-            >
-              <span className="mb-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#F2B705] text-xs font-black text-[#0f1923]">
-                {`0${i + 1}`}
-              </span>
-              <p
-                className="text-gray-600"
-                style={{ fontSize: '0.87rem', lineHeight: 1.7 }}
-              >
-                {text}
-              </p>
-            </div>
-          ))}
         </div>
 
         <div className="relative">
@@ -1526,7 +1310,7 @@ function FAQ() {
             <span
               style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em' }}
             >
-              PREGUNTAS FRECUENTES
+              DUDAS COMUNES
             </span>
             <div className="w-8 h-0.5" style={{ backgroundColor: YELLOW }} />
           </div>
@@ -1534,7 +1318,7 @@ function FAQ() {
             className="text-[#0f1923] mb-4"
             style={{ fontWeight: 800, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2 }}
           >
-            Las dudas más comunes
+            Preguntas <span style={{ color: YELLOW }}>Frecuentes</span>
           </h2>
         </div>
 
@@ -1912,7 +1696,8 @@ function Footer() {
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.8 }} className="mb-4">
               Empresa especializada en servicios integrales de construcción,
-              interiorismo y acabados de alta calidad en la Ciudad de México.
+              remodelación e interiorismo para proyectos residenciales,
+              comerciales e industriales en la Ciudad de México.
             </p>
             <p style={{ fontSize: '0.8rem', lineHeight: 1.7, color: '#6b7280' }}>CDMX</p>
             <div className="flex gap-3 mt-5">
@@ -2081,8 +1866,8 @@ function GalleryDialog({
             className="mx-auto max-w-xl text-gray-400"
             style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
           >
-            Obra real con los más altos estándares de construcción, interiorismo y
-            acabados en la Ciudad de México.
+            Obra real de construcción, remodelación, interiorismo y mantenimiento
+            en la Ciudad de México, organizada por línea de servicio.
           </p>
         </div>
       </div>
@@ -2333,7 +2118,6 @@ export default function Home() {
         <Nosotros />
         <Categories />
         <Servicios />
-        <Valores />
         <Proyectos onOpenGallery={openGallery} />
         <Proceso />
         <Testimonios />
