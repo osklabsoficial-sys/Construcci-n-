@@ -66,7 +66,7 @@ import {
 const YELLOW = '#F2B705'
 const DARK = '#0f1923'
 
-const LOGO = '/assets/image-CCeDO6ue.png'
+const LOGO = '/assets/logo-construtech-light.png'
 const IMG_CASA = '/assets/CASA-BdNrGWgy.jpg'
 const IMG_CANCHA = '/assets/CANCHA-Jgu3Sqk6.png'
 const IMG_HERRERIA = '/assets/HERRERIA_CANCHA-WScwCVFr.jpg'
@@ -86,8 +86,9 @@ const WHATSAPP_URL =
 const WHATSAPP_INFO_URL =
   'https://wa.me/525631223666?text=Hola%2C%20me%20interesa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.'
 const CONTACT_EMAIL = 'ventas@grupoconstrutech.com.mx'
-const PHONE_TEL_HREF = 'tel:525631223666'
-const PHONE_DISPLAY = '+52 56 3122 3666'
+const PHONE_TEL_HREF = 'tel:+525566016471'
+const PHONE_DISPLAY = '55 6601 6471'
+const WHATSAPP_DISPLAY = '+52 56 3122 3666'
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -500,13 +501,13 @@ function Navbar({ onOpenGallery }: { onOpenGallery: () => void }) {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <a href="#inicio" className="flex items-center rounded-md bg-white px-3 py-2 shadow-[0_8px_20px_rgba(0,0,0,0.35)]">
           <img
             src={LOGO}
             alt="Grupo Construtech Logo"
-            className="h-14 w-auto object-contain drop-shadow-[0_8px_20px_rgba(242,183,5,0.18)]"
+            className="h-9 w-auto object-contain"
           />
-        </div>
+        </a>
 
         <ul className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
@@ -1698,7 +1699,7 @@ function Contacto() {
                   rel="noopener noreferrer"
                   className="block text-sm font-semibold text-[#0f1923] transition-colors hover:text-[#25D366]"
                 >
-                  {PHONE_DISPLAY}
+                  {WHATSAPP_DISPLAY}
                 </a>
               </div>
             </div>
@@ -1902,11 +1903,11 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="mb-5">
+            <div className="mb-5 inline-block rounded-md bg-white px-4 py-3">
               <img
                 src={LOGO}
                 alt="Grupo Construtech"
-                className="h-16 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.8 }} className="mb-4">
@@ -2040,11 +2041,13 @@ function GalleryDialog({
 
       <nav className="sticky top-0 z-40 border-b border-white/10 bg-[#0b1220]/85 backdrop-blur-xl shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <img
-            src={LOGO}
-            alt="Grupo Construtech"
-            className="h-11 w-auto object-contain"
-          />
+          <div className="rounded-md bg-white px-3 py-2">
+            <img
+              src={LOGO}
+              alt="Grupo Construtech"
+              className="h-8 w-auto object-contain"
+            />
+          </div>
           <button
             type="button"
             onClick={onClose}

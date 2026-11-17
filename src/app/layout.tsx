@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Grupo Construtech S.A. de C.V." }],
   icons: {
-    icon: "/assets/image-CCeDO6ue.png",
+    icon: "/assets/logo-icon.png",
   },
   openGraph: {
     title: "Grupo Construtech | Construcción e Interiorismo de Alta Calidad",
