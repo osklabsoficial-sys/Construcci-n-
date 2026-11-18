@@ -20,6 +20,7 @@ import {
   Search,
   LayoutGrid,
   HardHat,
+  Home as HomeIcon,
   Phone,
   Facebook,
   Instagram,
@@ -62,11 +63,13 @@ const IMG_CANCHA = '/assets/CANCHA-Jgu3Sqk6.png'
 const IMG_HERRERIA = '/assets/HERRERIA_CANCHA-WScwCVFr.jpg'
 const IMG_CASETA = '/assets/CASETA_3-BCDr8rA9.png'
 const IMG_JARDIN = '/assets/JARDIN_2-CYLxEkJQ.jpg'
-const IMG_INTERIORISMO = '/assets/unsplash-interiorismo.jpg'
-const IMG_ACABADOS = '/assets/unsplash-acabados.jpg'
-const IMG_CARPINTERIA = '/assets/unsplash-carpinteria.jpg'
-const IMG_INSTALACIONES = '/assets/unsplash-instalaciones.jpg'
 const IMG_ADECUACIONES = '/assets/adecuaciones-residenciales.jpg'
+const IMG_INTERIORISMO_SALA = '/assets/servicio-interiorismo.jpg'
+const IMG_TERRAZA = '/assets/servicio-terraza.jpg'
+const IMG_FACHADA = '/assets/servicio-fachada.jpg'
+const IMG_INSTALACIONES = '/assets/servicio-instalaciones.jpg'
+const IMG_COCINA = '/assets/servicio-cocina.jpg'
+const IMG_CLOSET = '/assets/servicio-closet.jpg'
 const IMG_RESTAURANTE = '/assets/proyecto-restaurante.jpg'
 const IMG_IMPERMEABILIZACION = '/assets/proyecto-impermeabilizacion.jpg'
 const IMG_FORO = '/assets/proyecto-foro.jpg'
@@ -77,7 +80,7 @@ const WHATSAPP_INFO_URL =
   'https://wa.me/525631223666?text=Hola%2C%20me%20interesa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.'
 const CONTACT_EMAIL = 'ventas@grupoconstrutech.com.mx'
 const PHONE_TEL_HREF = 'tel:+525566016471'
-const PHONE_DISPLAY = '55 6601 6471'
+const PHONE_DISPLAY = '+52 55 6601 6471'
 const WHATSAPP_DISPLAY = '+52 56 3122 3666'
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -134,6 +137,12 @@ const SERVICES = [
       'Ejecución de obra civil, naves industriales, techumbres, velarias y estructuras metálicas.',
     image: IMG_HERRERIA,
     tag: 'Obra Civil · Estructuras · Velarias',
+    filter: 'Construcción e Infraestructura',
+    photos: [
+      { src: IMG_HERRERIA, alt: 'Velaria y herrería para cancha deportiva' },
+      { src: IMG_CANCHA, alt: 'Techumbre estructural para zona deportiva' },
+      { src: IMG_FORO, alt: 'Construcción de foro al aire libre' },
+    ],
   },
   {
     icon: Hammer,
@@ -142,6 +151,12 @@ const SERVICES = [
       'Transformación de espacios, oficinas, comercios y viviendas, con tablaroca y pintura.',
     image: IMG_RESTAURANTE,
     tag: 'Oficinas · Comercios · Viviendas',
+    filter: 'Remodelaciones y Acabados',
+    photos: [
+      { src: IMG_RESTAURANTE, alt: 'Remodelación integral de restaurante' },
+      { src: IMG_CASA, alt: 'Remodelación residencial con acabados modernos' },
+      { src: IMG_CASETA, alt: 'Remodelación de casetas con pintura e iluminación' },
+    ],
   },
   {
     icon: Palette,
@@ -150,6 +165,12 @@ const SERVICES = [
       'Diseño y adecuación de espacios, iluminación, paisajismo y áreas comunes.',
     image: IMG_JARDIN,
     tag: 'Iluminación · Paisajismo · Áreas Comunes',
+    filter: 'Interiorismo y Exteriores',
+    photos: [
+      { src: IMG_JARDIN, alt: 'Diseño de áreas de lectura y paisajismo' },
+      { src: IMG_INTERIORISMO_SALA, alt: 'Interiorismo residencial con mobiliario a la medida' },
+      { src: IMG_TERRAZA, alt: 'Terraza exterior con pérgola de madera' },
+    ],
   },
   {
     icon: ShieldCheck,
@@ -158,6 +179,26 @@ const SERVICES = [
       'Impermeabilización de azoteas y mantenimiento preventivo y correctivo de inmuebles.',
     image: IMG_IMPERMEABILIZACION,
     tag: 'Impermeabilización · Preventivo · Correctivo',
+    filter: 'Mantenimiento y Protección',
+    photos: [
+      { src: IMG_IMPERMEABILIZACION, alt: 'Impermeabilización de cubiertas y azoteas' },
+      { src: IMG_FACHADA, alt: 'Mantenimiento y resane de fachadas con andamio' },
+      { src: IMG_INSTALACIONES, alt: 'Revisión de instalaciones hidráulicas y eléctricas' },
+    ],
+  },
+  {
+    icon: HomeIcon,
+    title: 'Adecuaciones Residenciales',
+    description:
+      'Adaptaciones y mejoras a la medida en viviendas: tablaroca, closets, cocinas, carpintería, pintura, plomería e instalación eléctrica.',
+    image: IMG_ADECUACIONES,
+    tag: 'Closets · Cocinas · Tablaroca',
+    filter: 'Adecuaciones Residenciales',
+    photos: [
+      { src: IMG_ADECUACIONES, alt: 'Adecuación de espacios con tablaroca' },
+      { src: IMG_COCINA, alt: 'Instalación de cocina integral a la medida' },
+      { src: IMG_CLOSET, alt: 'Closet empotrado con carpintería personalizada' },
+    ],
   },
 ]
 
@@ -250,6 +291,17 @@ const PROJECTS = [
     image: IMG_FORO,
     size: 'large',
   },
+  {
+    id: 9,
+    title: 'Adecuación Residencial Integral',
+    category: 'Adecuaciones Residenciales',
+    galleryCategory: 'Adecuaciones Residenciales',
+    type: 'Carpintería · Tablaroca',
+    description:
+      'Adecuaciones a la medida en vivienda: tablaroca, closets empotrados, cocina integral y carpintería personalizada que optimizan cada espacio del hogar.',
+    image: IMG_ADECUACIONES,
+    size: 'medium',
+  },
 ]
 
 const GALLERY_FILTERS = [
@@ -258,12 +310,13 @@ const GALLERY_FILTERS = [
   'Remodelaciones y Acabados',
   'Interiorismo y Exteriores',
   'Mantenimiento y Protección',
+  'Adecuaciones Residenciales',
 ]
 
 const GALLERY_CARDS = [
   {
     title: 'Líneas de servicio',
-    text: 'Construcción e infraestructura, remodelaciones y acabados, interiorismo y exteriores, y mantenimiento y protección.',
+    text: 'Construcción e infraestructura, remodelaciones y acabados, interiorismo y exteriores, mantenimiento y protección, y adecuaciones residenciales.',
   },
   {
     title: 'Ejecución',
@@ -335,7 +388,7 @@ const FAQS = [
   {
     question: '¿Qué tipo de proyectos manejan?',
     answer:
-      'Proyectos residenciales, comerciales e industriales de construcción, remodelación, acabados, techumbres, velarias, interiorismo y mantenimiento.',
+      'Proyectos residenciales, comerciales e industriales de construcción, remodelación, adecuaciones, acabados, techumbres, velarias, interiorismo y mantenimiento.',
   },
   {
     question: '¿Hacen trabajo a medida?',
@@ -366,6 +419,7 @@ const FOOTER_LINKS = {
     { label: 'Remodelaciones y acabados', href: '#servicios' },
     { label: 'Interiorismo y exteriores', href: '#servicios' },
     { label: 'Mantenimiento y protección', href: '#servicios' },
+    { label: 'Adecuaciones residenciales', href: '#servicios' },
   ],
 }
 
@@ -718,8 +772,9 @@ function Nosotros() {
             >
               <strong>Grupo Construtech S.A. de C.V.</strong> es una empresa con
               sede en la Ciudad de México, especializada en servicios integrales
-              de construcción, remodelación e interiorismo para proyectos
-              residenciales, comerciales e industriales.
+              de construcción, remodelación, interiorismo, mantenimiento y
+              adecuaciones residenciales para proyectos residenciales,
+              comerciales e industriales.
             </p>
 
             <div
@@ -872,6 +927,8 @@ function Servicios() {
   const servicesRef = useRef<HTMLDivElement>(null)
   const [canLeft, setCanLeft] = useState(false)
   const [canRight, setCanRight] = useState(true)
+  const [lightbox, setLightbox] = useState<(typeof SERVICES)[number] | null>(null)
+  const [photoIndex, setPhotoIndex] = useState(0)
 
   const updateArrows = useCallback(() => {
     const el = servicesRef.current
@@ -892,6 +949,11 @@ function Servicios() {
     const card = el.querySelector('[data-service-card]') as HTMLElement | null
     const step = card ? card.offsetWidth + 20 : 320
     el.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
+
+  function openServicePhotos(service: (typeof SERVICES)[number], index: number) {
+    setLightbox(service)
+    setPhotoIndex(index)
   }
 
   return (
@@ -917,8 +979,9 @@ function Servicios() {
             className="text-gray-500 max-w-2xl mx-auto"
             style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
           >
-            Cuatro líneas de servicio que cubren todo el ciclo del proyecto:
-            construcción, remodelación, interiorismo y mantenimiento.
+            Cinco líneas de servicio que cubren todo el ciclo del proyecto:
+            construcción, remodelación, interiorismo, mantenimiento y
+            adecuaciones residenciales.
           </p>
         </div>
 
@@ -990,12 +1053,113 @@ function Servicios() {
                 >
                   {service.description}
                 </p>
+
+                <div className="mt-4 border-t border-[#0f1923]/8 pt-3">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span
+                      className="text-gray-400"
+                      style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.14em' }}
+                    >
+                      FOTOGRAFÍAS
+                    </span>
+                    <span
+                      className="text-gray-400"
+                      style={{ fontSize: '0.66rem', fontWeight: 600 }}
+                    >
+                      {service.photos.length} fotos
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {service.photos.map((photo, pi) => (
+                      <button
+                        key={photo.src}
+                        type="button"
+                        onClick={() => openServicePhotos(service, pi)}
+                        className="group/photo relative h-16 overflow-hidden rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B705]"
+                        aria-label={`Ampliar fotografía: ${photo.alt}`}
+                      >
+                        <img
+                          src={photo.src}
+                          alt={photo.alt}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover/photo:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-[#0f1923]/0 transition-colors duration-200 group-hover/photo:bg-[#0f1923]/25" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}
           </div>
+
+          <div
+            className="mt-2 flex min-h-[1.75rem] items-center justify-center gap-2 text-gray-400"
+            style={{ fontSize: '0.72rem', letterSpacing: '0.06em' }}
+          >
+            {canRight && (
+              <>
+                Desliza para descubrir más servicios
+                <ChevronRight className="h-3.5 w-3.5 animate-pulse" style={{ color: YELLOW }} />
+              </>
+            )}
+          </div>
         </div>
       </div>
+
+      <Dialog open={!!lightbox} onOpenChange={(o) => !o && setLightbox(null)}>
+        <DialogContent className="max-w-2xl overflow-hidden rounded-[28px] border border-[#F2B705]/20 bg-[#0f1923] p-0 text-white shadow-[0_30px_90px_rgba(15,25,35,0.4)] sm:max-w-2xl">
+          {lightbox && (
+            <>
+              <div className="relative">
+                <img
+                  src={lightbox.photos[photoIndex].src}
+                  alt={lightbox.photos[photoIndex].alt}
+                  className="h-64 w-full object-cover sm:h-80"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0f1923] via-transparent to-transparent" />
+                <button
+                  type="button"
+                  onClick={() => setPhotoIndex((i) => Math.max(0, i - 1))}
+                  disabled={photoIndex === 0}
+                  className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#0f1923]/70 text-white transition-colors hover:border-[#F2B705] hover:text-[#F2B705] disabled:cursor-not-allowed disabled:opacity-30"
+                  aria-label="Fotografía anterior"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setPhotoIndex((i) => Math.min(lightbox.photos.length - 1, i + 1))
+                  }
+                  disabled={photoIndex === lightbox.photos.length - 1}
+                  className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#0f1923]/70 text-white transition-colors hover:border-[#F2B705] hover:text-[#F2B705] disabled:cursor-not-allowed disabled:opacity-30"
+                  aria-label="Fotografía siguiente"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+                <span className="absolute bottom-3 right-4 rounded-full bg-[#0f1923]/80 px-3 py-1 text-xs font-semibold text-[#F2B705]">
+                  {photoIndex + 1} / {lightbox.photos.length}
+                </span>
+              </div>
+              <div className="space-y-4 p-6">
+                <div className="inline-flex items-center rounded-full border border-[#F2B705]/30 bg-[#F2B705]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#F2B705]">
+                  {lightbox.title}
+                </div>
+                <DialogHeader className="space-y-2 text-left">
+                  <DialogTitle className="text-xl font-black text-white">
+                    {lightbox.photos[photoIndex].alt}
+                  </DialogTitle>
+                  <DialogDescription className="text-sm leading-6 text-gray-300">
+                    {lightbox.description}
+                  </DialogDescription>
+                </DialogHeader>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }
@@ -1037,7 +1201,8 @@ function Proyectos({ onOpenGallery }: { onOpenGallery: () => void }) {
               style={{ fontSize: '0.9rem', lineHeight: 1.7 }}
             >
               Obra real organizada por línea de servicio: construcción,
-              remodelación, interiorismo y mantenimiento.
+              remodelación, interiorismo, mantenimiento y adecuaciones
+              residenciales.
             </p>
           </motion.div>
 
@@ -1696,8 +1861,9 @@ function Footer() {
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.8 }} className="mb-4">
               Empresa especializada en servicios integrales de construcción,
-              remodelación e interiorismo para proyectos residenciales,
-              comerciales e industriales en la Ciudad de México.
+              remodelación, interiorismo, mantenimiento y adecuaciones
+              residenciales para proyectos residenciales, comerciales e
+              industriales en la Ciudad de México.
             </p>
             <p style={{ fontSize: '0.8rem', lineHeight: 1.7, color: '#6b7280' }}>CDMX</p>
             <div className="flex gap-3 mt-5">
@@ -1866,8 +2032,9 @@ function GalleryDialog({
             className="mx-auto max-w-xl text-gray-400"
             style={{ fontSize: '0.975rem', lineHeight: 1.7 }}
           >
-            Obra real de construcción, remodelación, interiorismo y mantenimiento
-            en la Ciudad de México, organizada por línea de servicio.
+            Obra real de construcción, remodelación, interiorismo,
+            mantenimiento y adecuaciones residenciales en la Ciudad de México,
+            organizada por línea de servicio.
           </p>
         </div>
       </div>
