@@ -28,6 +28,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Mail,
+  MapPin,
   Loader2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -82,6 +83,8 @@ const CONTACT_EMAIL = 'ventas@grupoconstrutech.com.mx'
 const PHONE_TEL_HREF = 'tel:+525566016471'
 const PHONE_DISPLAY = '+52 55 6601 6471'
 const WHATSAPP_DISPLAY = '+52 56 3122 3666'
+const ADDRESS = 'Eje 3 Oriente Arneses 588, Tula, Iztapalapa, 09800 Ciudad de México, CDMX'
+const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -1652,6 +1655,27 @@ function Contacto() {
                 </a>
               </div>
             </div>
+
+            <div className="flex items-center gap-4 rounded-[22px] border border-[#0f1923]/8 bg-white p-4 shadow-sm">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-[#F2B705]/20 bg-[#F2B705]/10">
+                <MapPin className="h-5 w-5" style={{ color: YELLOW }} />
+              </div>
+              <div>
+                <span className="block text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
+                  Dirección
+                </span>
+                <a
+                  href={MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-sm font-semibold text-[#0f1923] transition-colors hover:text-[#F2B705]"
+                >
+                  Eje 3 Oriente Arneses 588, Tula, Iztapalapa,{' '}
+                  <br className="hidden sm:block" />
+                  09800 Ciudad de México, CDMX
+                </a>
+              </div>
+            </div>
           </motion.div>
 
           <motion.form
@@ -1865,7 +1889,10 @@ function Footer() {
               residenciales para proyectos residenciales, comerciales e
               industriales en la Ciudad de México.
             </p>
-            <p style={{ fontSize: '0.8rem', lineHeight: 1.7, color: '#6b7280' }}>CDMX</p>
+            <p style={{ fontSize: '0.8rem', lineHeight: 1.7, color: '#6b7280' }}>
+              Eje 3 Oriente Arneses 588, Tula, Iztapalapa,{' '}
+              09800 Ciudad de México, CDMX
+            </p>
             <div className="flex gap-3 mt-5">
               {[
                 { icon: Facebook, label: 'Facebook' },
