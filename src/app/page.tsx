@@ -607,13 +607,13 @@ function Hero() {
 
           <motion.h1
             className="text-white mb-6"
-            style={{ fontWeight: 800, lineHeight: 1.1, fontSize: 'clamp(2.2rem, 5vw, 4rem)' }}
+            style={{ fontWeight: 800, lineHeight: 1.15, fontSize: 'clamp(2.1rem, 4.5vw, 3.6rem)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            Construcción e Interiorismo con{' '}
-            <span style={{ color: YELLOW }}>Estándares de Excelencia</span>
+            Construcción e Interiorismo:{' '}
+            <span style={{ color: YELLOW }}>Diseño que trasciende, obra que perdura</span>
           </motion.h1>
 
           <motion.p

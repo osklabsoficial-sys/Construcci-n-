@@ -3,9 +3,9 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Grupo Construtech | Construcción e Interiorismo con Estándares de Excelencia",
+  title: "Grupo Construtech | Construcción e Interiorismo — Diseño que trasciende, obra que perdura",
   description:
-    "Grupo Construtech S.A. de C.V. — Construcción, remodelación e interiorismo con estándares de excelencia en la Ciudad de México. Soluciones integrales para proyectos residenciales, comerciales e industriales.",
+    "Grupo Construtech S.A. de C.V. — Construcción e interiorismo. Diseño que trasciende, obra que perdura. Soluciones integrales para proyectos residenciales, comerciales e industriales en la Ciudad de México.",
   keywords: [
     "construcción",
     "interiorismo",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     icon: "/assets/logo-icon.png",
   },
   openGraph: {
-    title: "Grupo Construtech | Construcción e Interiorismo con Estándares de Excelencia",
+    title: "Grupo Construtech | Construcción e Interiorismo — Diseño que trasciende, obra que perdura",
     description:
       "Soluciones integrales para proyectos residenciales, comerciales e industriales en la Ciudad de México.",
     siteName: "Grupo Construtech",
