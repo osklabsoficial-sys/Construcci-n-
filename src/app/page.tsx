@@ -24,7 +24,6 @@ import {
   Phone,
   Facebook,
   Instagram,
-  Linkedin,
   ChevronLeft,
   ChevronRight,
   Mail,
@@ -85,6 +84,9 @@ const PHONE_DISPLAY = '+52 55 6601 6471'
 const WHATSAPP_DISPLAY = '+52 56 3122 3666'
 const ADDRESS = 'Eje 3 Oriente Arneses 588, Tula, Iztapalapa, 09800 Ciudad de México, CDMX'
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`
+const SOCIAL_FACEBOOK = 'https://www.facebook.com/profile.php?id=61593899015845'
+const SOCIAL_INSTAGRAM = 'https://www.instagram.com/grupoconstrutechmx/'
+const SOCIAL_TIKTOK = 'https://www.tiktok.com/@grupoconstrutechmx'
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -92,6 +94,17 @@ function WhatsAppIcon({ className }: { className?: string }) {
       <path
         fill="currentColor"
         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"
+      />
+    </svg>
+  )
+}
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.23.71-.09 1.57-.02 2.33.03.55.14 1.13.51 1.56.86 1.04 2.56 1.19 3.62.42.61-.42.97-1.13 1.06-1.84.06-.5.05-1.01.05-1.51V.02h5.06z"
       />
     </svg>
   )
@@ -776,8 +789,8 @@ function Nosotros() {
               <strong>Grupo Construtech S.A. de C.V.</strong> es una empresa con
               sede en la Ciudad de México, especializada en servicios integrales
               de construcción, remodelación, interiorismo, mantenimiento y
-              adecuaciones residenciales para proyectos residenciales,
-              comerciales e industriales.
+              adecuaciones para proyectos residenciales, comerciales e
+              industriales.
             </p>
 
             <div
@@ -1885,9 +1898,9 @@ function Footer() {
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.8 }} className="mb-4">
               Empresa especializada en servicios integrales de construcción,
-              remodelación, interiorismo, mantenimiento y adecuaciones
-              residenciales para proyectos residenciales, comerciales e
-              industriales en la Ciudad de México.
+              remodelación, interiorismo, mantenimiento y adecuaciones para
+              proyectos residenciales, comerciales e industriales en la
+              Ciudad de México.
             </p>
             <p style={{ fontSize: '0.8rem', lineHeight: 1.7, color: '#6b7280' }}>
               Eje 3 Oriente Arneses 588, Tula, Iztapalapa,{' '}
@@ -1895,14 +1908,16 @@ function Footer() {
             </p>
             <div className="flex gap-3 mt-5">
               {[
-                { icon: Facebook, label: 'Facebook' },
-                { icon: Instagram, label: 'Instagram' },
-                { icon: Linkedin, label: 'LinkedIn' },
-              ].map(({ icon: Icon, label }) => (
+                { icon: Facebook, label: 'Facebook', href: SOCIAL_FACEBOOK },
+                { icon: Instagram, label: 'Instagram', href: SOCIAL_INSTAGRAM },
+                { icon: TikTokIcon, label: 'TikTok', href: SOCIAL_TIKTOK },
+              ].map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
-                  aria-label={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${label} de Grupo Construtech`}
                   className="w-9 h-9 flex items-center justify-center transition-colors duration-200 hover:bg-[#F2B705]"
                   style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}
                 >
